@@ -1,0 +1,82 @@
+package io.github.shshdxk.domain;
+
+import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.domain.Persistable;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+
+@MappedSuperclass
+public abstract class AbstractEntity implements Persistable<Long>, Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "id", nullable = false, updatable = false)
+    @GeneratedValue(generator = "idGenerator")
+    @GenericGenerator(name = "idGenerator", strategy = "io.github.shshdxk.domain.IdGenerator")
+    @Comment("主键")
+    private Long id;
+
+    @Override
+    @Transient
+    public boolean isNew() {
+        return getId() == null;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Entity of type %s with id: %s", this.getClass().getName(), getId());
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        Class<?> thisClass = this.getClass();
+        Class<?> thatClass = obj.getClass();
+        if (obj instanceof HibernateProxy) {
+            thatClass = ((HibernateProxy) obj).getHibernateLazyInitializer().getPersistentClass();
+        }
+
+        if (thisClass != thatClass) {
+            return false;
+        }
+
+        AbstractEntity that = (AbstractEntity) obj;
+        return Objects.equals(this.getId(), that.getId());
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+}

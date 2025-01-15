@@ -18,5 +18,15 @@
     </properties>
     <modules>
         <module>dm-migration</module>
+        <module>hibernate-test</module>
     </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.shshdxk</groupId>
+                <artifactId>dm-migration</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

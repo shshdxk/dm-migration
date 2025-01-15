@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.shshdxk</groupId>
+        <artifactId>dm-migration-parent</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>hibernate-test</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <liquibase-hibernate5.version>4.22.0</liquibase-hibernate5.version>
+        <hibernate.version>5.6.15.Final</hibernate.version>
+        <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.shshdxk</groupId>
+            <artifactId>dm-migration</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <version>2.7.18</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>4.22.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.22.0</version>
+                <configuration>
+                    <propertyFile>src/main/resources/config/liquibase/dm/liquibase-dm.properties</propertyFile>
+                    <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
+                    <diffChangeLogFile>src/main/resources/config/liquibase/dm/changelog/diff_${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                    <outputChangeLogFile>src/main/resources/config/liquibase/output.xml</outputChangeLogFile>
+                    <verbose>true</verbose>
+                    <logging>debug</logging>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate5</artifactId>
+                        <version>${liquibase-hibernate5.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-core</artifactId>
+                        <version>${hibernate.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.hibernate.validator</groupId>
+                        <artifactId>hibernate-validator</artifactId>
+                        <version>${hibernate-validator.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-data-jpa</artifactId>
+                        <version>2.7.18</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.dameng</groupId>
+                        <artifactId>DmJdbcDriver18</artifactId>
+                        <version>8.1.1.193</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.dm</groupId>
+                        <artifactId>DmDialect-for-hibernate</artifactId>
+                        <version>5.4</version>
+                        <scope>system</scope>
+                        <systemPath>${project.basedir}/../lib/org/dm/DmDialect-for-hibernate/5.4/DmDialect-for-hibernate-5.4.jar</systemPath>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>io.github.shshdxk</groupId>
+                        <artifactId>dm-liquibase</artifactId>
+                        <version>2.7.0</version>
+                    </dependency>
+<!--                    <dependency>-->
+<!--                        <groupId>io.github.shshdxk</groupId>-->
+<!--                        <artifactId>dm-migration</artifactId>-->
+<!--                        <version>${project.version}</version>-->
+<!--                    </dependency>-->
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+</project>

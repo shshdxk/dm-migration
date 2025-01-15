@@ -227,7 +227,7 @@ public class DmDatabase extends AbstractJdbcDatabase {
 
     @Override
     public Integer getDefaultPort() {
-        return 1521;
+        return 5236;
     }
 
     @Override
