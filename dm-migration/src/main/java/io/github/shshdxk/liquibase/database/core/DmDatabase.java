@@ -107,93 +107,93 @@ public class DmDatabase extends AbstractJdbcDatabase {
         }
     }
 
-    @Override
-    public void setConnection(DatabaseConnection conn) {
-        //noinspection HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,
-        // HardCodedStringLiteral
-        reservedWords.addAll(Arrays.asList("GROUP", "USER", "SESSION", "PASSWORD", "RESOURCE", "START", "SIZE", "UID", "DESC", "ORDER", "COMMENT", "IDENTITY")); //more reserved words not returned by driver
-
-        Connection sqlConn = null;
-        if (!(conn instanceof OfflineConnection)) {
-            try {
-                /*
-                 * Don't try to call getWrappedConnection if the conn instance is
-                 * is not a JdbcConnection. This happens for OfflineConnection.
-                 * see https://liquibase.jira.com/browse/CORE-2192
-                 */
-                if (conn instanceof JdbcConnection) {
-                    sqlConn = ((JdbcConnection) conn).getWrappedConnection();
-                }
-            } catch (Exception e) {
-                throw new UnexpectedLiquibaseException(e);
-            }
-
-            if (sqlConn != null) {
-                tryProxySession(conn.getURL(), sqlConn);
-
-                try {
-                    //noinspection HardCodedStringLiteral
-                    reservedWords.addAll(Arrays.asList(sqlConn.getMetaData().getSQLKeywords().toUpperCase().split(",\\s*")));
-                } catch (SQLException e) {
-                    //noinspection HardCodedStringLiteral
-                    Scope.getCurrentScope().getLog(getClass()).info("Could get sql keywords on OracleDatabase: " + e.getMessage());
-                    //can not get keywords. Continue on
-                }
-                try {
-                    Method method = sqlConn.getClass().getMethod("setRemarksReporting", Boolean.TYPE);
-                    method.setAccessible(true);
-                    method.invoke(sqlConn, true);
-                } catch (Exception e) {
-                    //noinspection HardCodedStringLiteral
-                    Scope.getCurrentScope().getLog(getClass()).info("Could not set remarks reporting on OracleDatabase: " + e.getMessage());
-
-                    //cannot set it. That is OK
-                }
-
-//                CallableStatement statement = null;
+//    @Override
+//    public void setConnection(DatabaseConnection conn) {
+//        //noinspection HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,
+//        // HardCodedStringLiteral
+//        reservedWords.addAll(Arrays.asList("GROUP", "USER", "SESSION", "PASSWORD", "RESOURCE", "START", "SIZE", "UID", "DESC", "ORDER", "COMMENT", "IDENTITY")); //more reserved words not returned by driver
+//
+//        Connection sqlConn = null;
+//        if (!(conn instanceof OfflineConnection)) {
+//            try {
+//                /*
+//                 * Don't try to call getWrappedConnection if the conn instance is
+//                 * is not a JdbcConnection. This happens for OfflineConnection.
+//                 * see https://liquibase.jira.com/browse/CORE-2192
+//                 */
+//                if (conn instanceof JdbcConnection) {
+//                    sqlConn = ((JdbcConnection) conn).getWrappedConnection();
+//                }
+//            } catch (Exception e) {
+//                throw new UnexpectedLiquibaseException(e);
+//            }
+//
+//            if (sqlConn != null) {
+//                tryProxySession(conn.getURL(), sqlConn);
+//
 //                try {
 //                    //noinspection HardCodedStringLiteral
-//                    statement = sqlConn.prepareCall("{call DBMS_UTILITY.DB_VERSION(?,?)}");
-//                    statement.registerOutParameter(1, Types.VARCHAR);
-//                    statement.registerOutParameter(2, Types.VARCHAR);
-//                    statement.execute();
-//
-//                    String compatibleVersion = statement.getString(2);
-//                    if (compatibleVersion != null) {
-//                        Matcher majorVersionMatcher = VERSION_PATTERN.matcher(compatibleVersion);
-//                        if (majorVersionMatcher.matches()) {
-//                            this.databaseMajorVersion = Integer.valueOf(majorVersionMatcher.group(1));
-//                            this.databaseMinorVersion = Integer.valueOf(majorVersionMatcher.group(2));
-//                        }
-//                    }
+//                    reservedWords.addAll(Arrays.asList(sqlConn.getMetaData().getSQLKeywords().toUpperCase().split(",\\s*")));
 //                } catch (SQLException e) {
-//                    @SuppressWarnings("HardCodedStringLiteral") String message = "Cannot read from DBMS_UTILITY.DB_VERSION: " + e.getMessage();
-//
 //                    //noinspection HardCodedStringLiteral
-//                    Scope.getCurrentScope().getLog(getClass()).info("Could not set check compatibility mode on OracleDatabase, assuming not running in any sort of compatibility mode: " + message);
-//                } finally {
-//                    JdbcUtil.closeStatement(statement);
+//                    Scope.getCurrentScope().getLog(getClass()).info("Could get sql keywords on OracleDatabase: " + e.getMessage());
+//                    //can not get keywords. Continue on
 //                }
-
-                if (GlobalConfiguration.DDL_LOCK_TIMEOUT.getCurrentValue() != null) {
-                    int timeoutValue = GlobalConfiguration.DDL_LOCK_TIMEOUT.getCurrentValue();
-                    Scope.getCurrentScope().getLog(getClass()).fine("Setting DDL_LOCK_TIMEOUT value to " + timeoutValue);
-                    String sql = "ALTER SESSION SET DDL_LOCK_TIMEOUT=" + timeoutValue;
-                    PreparedStatement ddlLockTimeoutStatement = null;
-                    try {
-                        ddlLockTimeoutStatement = sqlConn.prepareStatement(sql);
-                        ddlLockTimeoutStatement.execute();
-                    } catch (SQLException sqle) {
-                        Scope.getCurrentScope().getUI().sendErrorMessage("Unable to set the DDL_LOCK_TIMEOUT_VALUE: " + sqle.getMessage(), sqle);
-                        Scope.getCurrentScope().getLog(getClass()).warning("Unable to set the DDL_LOCK_TIMEOUT_VALUE: " + sqle.getMessage(), sqle);
-                    } finally {
-                        JdbcUtil.closeStatement(ddlLockTimeoutStatement);
-                    }
-                }
-            }
-        }
-        super.setConnection(conn);
-    }
+//                try {
+//                    Method method = sqlConn.getClass().getMethod("setRemarksReporting", Boolean.TYPE);
+//                    method.setAccessible(true);
+//                    method.invoke(sqlConn, true);
+//                } catch (Exception e) {
+//                    //noinspection HardCodedStringLiteral
+//                    Scope.getCurrentScope().getLog(getClass()).info("Could not set remarks reporting on OracleDatabase: " + e.getMessage());
+//
+//                    //cannot set it. That is OK
+//                }
+//
+////                CallableStatement statement = null;
+////                try {
+////                    //noinspection HardCodedStringLiteral
+////                    statement = sqlConn.prepareCall("{call DBMS_UTILITY.DB_VERSION(?,?)}");
+////                    statement.registerOutParameter(1, Types.VARCHAR);
+////                    statement.registerOutParameter(2, Types.VARCHAR);
+////                    statement.execute();
+////
+////                    String compatibleVersion = statement.getString(2);
+////                    if (compatibleVersion != null) {
+////                        Matcher majorVersionMatcher = VERSION_PATTERN.matcher(compatibleVersion);
+////                        if (majorVersionMatcher.matches()) {
+////                            this.databaseMajorVersion = Integer.valueOf(majorVersionMatcher.group(1));
+////                            this.databaseMinorVersion = Integer.valueOf(majorVersionMatcher.group(2));
+////                        }
+////                    }
+////                } catch (SQLException e) {
+////                    @SuppressWarnings("HardCodedStringLiteral") String message = "Cannot read from DBMS_UTILITY.DB_VERSION: " + e.getMessage();
+////
+////                    //noinspection HardCodedStringLiteral
+////                    Scope.getCurrentScope().getLog(getClass()).info("Could not set check compatibility mode on OracleDatabase, assuming not running in any sort of compatibility mode: " + message);
+////                } finally {
+////                    JdbcUtil.closeStatement(statement);
+////                }
+//
+//                if (GlobalConfiguration.DDL_LOCK_TIMEOUT.getCurrentValue() != null) {
+//                    int timeoutValue = GlobalConfiguration.DDL_LOCK_TIMEOUT.getCurrentValue();
+//                    Scope.getCurrentScope().getLog(getClass()).fine("Setting DDL_LOCK_TIMEOUT value to " + timeoutValue);
+//                    String sql = "ALTER SESSION SET DDL_LOCK_TIMEOUT=" + timeoutValue;
+//                    PreparedStatement ddlLockTimeoutStatement = null;
+//                    try {
+//                        ddlLockTimeoutStatement = sqlConn.prepareStatement(sql);
+//                        ddlLockTimeoutStatement.execute();
+//                    } catch (SQLException sqle) {
+//                        Scope.getCurrentScope().getUI().sendErrorMessage("Unable to set the DDL_LOCK_TIMEOUT_VALUE: " + sqle.getMessage(), sqle);
+//                        Scope.getCurrentScope().getLog(getClass()).warning("Unable to set the DDL_LOCK_TIMEOUT_VALUE: " + sqle.getMessage(), sqle);
+//                    } finally {
+//                        JdbcUtil.closeStatement(ddlLockTimeoutStatement);
+//                    }
+//                }
+//            }
+//        }
+//        super.setConnection(conn);
+//    }
 
     @Override
     public String getShortName() {
@@ -728,7 +728,13 @@ public class DmDatabase extends AbstractJdbcDatabase {
     }
 
     @Override
+    public boolean supportsTableRemarks() {
+        return true;
+    }
+
+    @Override
     public boolean supportsColumnRemarks() {
         return true;
     }
+
 }

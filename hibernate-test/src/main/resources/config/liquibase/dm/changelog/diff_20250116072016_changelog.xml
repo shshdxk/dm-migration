@@ -1,14 +1,14 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="60902 (generated)" id="1737012020983-1">
-        <createTable tableName="ih_user_settings">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="60902 (generated)" id="1751361577270-1">
+        <createTable remarks="用户设置表" tableName="ih_user_settings">
             <column name="id" remarks="主键" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="ih_user_settingsPK"/>
             </column>
-            <column name="created_date" type="datetime">
+            <column name="created_date" remarks="创建时间" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_date" type="datetime">
+            <column name="updated_date" remarks="最后一次更新时间" type="datetime">
                 <constraints nullable="false"/>
             </column>
             <column name="setting_key" remarks="参数描述" type="VARCHAR(128)"/>
@@ -18,15 +18,15 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1737012020983-2">
-        <createTable tableName="ih_users">
+    <changeSet author="60902 (generated)" id="1751361577270-2">
+        <createTable remarks="用户表" tableName="ih_users">
             <column name="id" remarks="主键" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="ih_usersPK"/>
             </column>
-            <column name="created_date" type="datetime">
+            <column name="created_date" remarks="创建时间" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_date" type="datetime">
+            <column name="updated_date" remarks="最后一次更新时间" type="datetime">
                 <constraints nullable="false"/>
             </column>
             <column name="avatar_url" remarks="头像URL" type="VARCHAR(255)"/>
@@ -44,16 +44,16 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1737012020983-3">
+    <changeSet author="60902 (generated)" id="1751361577270-3">
         <addUniqueConstraint columnNames="mobile" constraintName="U_USERS_MOBILE" tableName="ih_users"/>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1737012020983-4">
+    <changeSet author="60902 (generated)" id="1751361577270-4">
         <addUniqueConstraint columnNames="username" constraintName="U_USERS_USERNAME" tableName="ih_users"/>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1737012020983-5">
+    <changeSet author="60902 (generated)" id="1751361577270-5">
         <addUniqueConstraint columnNames="user_id, setting_key" constraintName="U_USER_SETTINGS_KEY" tableName="ih_user_settings"/>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1737012020983-6">
+    <changeSet author="60902 (generated)" id="1751361577270-6">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="ih_user_settings" constraintName="FK_USER_SETTING_USER_ID" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="ih_users" validate="true"/>
     </changeSet>
 </databaseChangeLog>

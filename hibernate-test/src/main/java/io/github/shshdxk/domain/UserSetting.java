@@ -11,7 +11,7 @@ import javax.persistence.*;
         @UniqueConstraint(name = "U_USER_SETTINGS_KEY", columnNames = { "user_id", "setting_key" })
     }
 )
-@org.hibernate.annotations.Table(appliesTo = User.TABLE_NAME, comment = "用户设置表")
+@org.hibernate.annotations.Table(appliesTo = UserSetting.TABLE_NAME, comment = "用户设置表")
 public class UserSetting extends UpdatableEntity {
 
     public static final String TABLE_NAME = "ih_user_settings";
