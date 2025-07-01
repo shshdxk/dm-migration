@@ -139,16 +139,16 @@ public class DmDatabase extends AbstractJdbcDatabase {
                     Scope.getCurrentScope().getLog(getClass()).info("Could get sql keywords on OracleDatabase: " + e.getMessage());
                     //can not get keywords. Continue on
                 }
-//                try {
-//                    Method method = sqlConn.getClass().getMethod("setRemarksReporting", Boolean.TYPE);
-//                    method.setAccessible(true);
-//                    method.invoke(sqlConn, true);
-//                } catch (Exception e) {
-//                    //noinspection HardCodedStringLiteral
-//                    Scope.getCurrentScope().getLog(getClass()).info("Could not set remarks reporting on OracleDatabase: " + e.getMessage());
-//
-//                    //cannot set it. That is OK
-//                }
+                try {
+                    Method method = sqlConn.getClass().getMethod("setRemarksReporting", Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(sqlConn, true);
+                } catch (Exception e) {
+                    //noinspection HardCodedStringLiteral
+                    Scope.getCurrentScope().getLog(getClass()).info("Could not set remarks reporting on OracleDatabase: " + e.getMessage());
+
+                    //cannot set it. That is OK
+                }
 
 //                CallableStatement statement = null;
 //                try {
@@ -237,6 +237,7 @@ public class DmDatabase extends AbstractJdbcDatabase {
 
     @Override
     public String getJdbcSchemaName(CatalogAndSchema schema) {
+//        return "UAT";
         return correctObjectName((schema.getCatalogName() == null) ? schema.getSchemaName() : schema.getCatalogName(), Schema.class);
     }
 
@@ -288,7 +289,7 @@ public class DmDatabase extends AbstractJdbcDatabase {
      */
     @Override
     public boolean supportsSchemas() {
-        return false;
+        return true;
     }
 
     @Override
@@ -368,88 +369,88 @@ public class DmDatabase extends AbstractJdbcDatabase {
         return "UNSUPPORTED:" + isoDate;
     }
 
-    @Override
-    public boolean isSystemObject(DatabaseObject example) {
-        if (example == null) {
-            return false;
-        }
-
-        if (this.isLiquibaseObject(example)) {
-            return false;
-        }
-
-        if (example instanceof Schema) {
-            //noinspection HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral
-            if ("SYSTEM".equals(example.getName()) || "SYS".equals(example.getName()) || "CTXSYS".equals(example.getName()) || "XDB".equals(example.getName())) {
-                return true;
-            }
-            //noinspection HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral
-            if ("SYSTEM".equals(example.getSchema().getCatalogName()) || "SYS".equals(example.getSchema().getCatalogName()) || "CTXSYS".equals(example.getSchema().getCatalogName()) || "XDB".equals(example.getSchema().getCatalogName())) {
-                return true;
-            }
-        } else if (isSystemObject(example.getSchema())) {
-            return true;
-        }
-        if (example instanceof Catalog) {
-            //noinspection HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral
-            if (("SYSTEM".equals(example.getName()) || "SYS".equals(example.getName()) || "CTXSYS".equals(example.getName()) || "XDB".equals(example.getName()))) {
-                return true;
-            }
-        } else if (example.getName() != null) {
-            //noinspection HardCodedStringLiteral
-            if (example.getName().startsWith("BIN$")) { //oracle deleted table
-                boolean filteredInOriginalQuery = this.canAccessDbaRecycleBin();
-                if (!filteredInOriginalQuery) {
-                    filteredInOriginalQuery = StringUtil.trimToEmpty(example.getSchema().getName()).equalsIgnoreCase(this.getConnection().getConnectionUserName());
-                }
-
-                if (filteredInOriginalQuery) {
-                    return !((example instanceof PrimaryKey) || (example instanceof Index) || (example instanceof
-                            liquibase.statement.UniqueConstraint));
-                } else {
-                    return true;
-                }
-            } else //noinspection HardCodedStringLiteral
-                if (example.getName().startsWith("AQ$")) { //oracle AQ tables
-                    return true;
-                } else //noinspection HardCodedStringLiteral
-                    if (example.getName().startsWith("DR$")) { //oracle index tables
-                        return true;
-                    } else //noinspection HardCodedStringLiteral
-                        if (example.getName().startsWith("SYS_IOT_OVER")) { //oracle system table
-                            return true;
-                        } else //noinspection HardCodedStringLiteral,HardCodedStringLiteral
-                            if ((example.getName().startsWith("MDRT_") || example.getName().startsWith("MDRS_")) && example.getName().endsWith("$")) {
-                                // CORE-1768 - Oracle creates these for spatial indices and will remove them when the index is removed.
-                                return true;
-                            } else //noinspection HardCodedStringLiteral
-                                if (example.getName().startsWith("MLOG$_")) { //Created by materliaized view logs for every table that is part of a materialized view. Not available for DDL operations.
-                                    return true;
-                                } else //noinspection HardCodedStringLiteral
-                                    if (example.getName().startsWith("RUPD$_")) { //Created by materialized view log tables using primary keys. Not available for DDL operations.
-                                        return true;
-                                    } else //noinspection HardCodedStringLiteral
-                                        if (example.getName().startsWith("WM$_")) { //Workspace Manager backup tables.
-                                            return true;
-                                        } else //noinspection HardCodedStringLiteral
-                                            if ("CREATE$JAVA$LOB$TABLE".equals(example.getName())) { //This table contains the name of the Java object, the date it was loaded, and has a BLOB column to store the Java object.
-                                                return true;
-                                            } else //noinspection HardCodedStringLiteral
-                                                if ("JAVA$CLASS$MD5$TABLE".equals(example.getName())) { //This is a hash table that tracks the loading of Java objects into a schema.
-                                                    return true;
-                                                } else //noinspection HardCodedStringLiteral
-                                                    if (example.getName().startsWith("ISEQ$$_")) { //System-generated sequence
-                                                        return true;
-                                                    } else //noinspection HardCodedStringLiteral
-                                                        if (example.getName().startsWith("USLOG$")) { //for update materialized view
-                                                            return true;
-                                                        } else if (example.getName().startsWith("SYS_FBA")) { //for Flashback tables
-                                                            return true;
-                                                        }
-        }
-
-        return super.isSystemObject(example);
-    }
+//    @Override
+//    public boolean isSystemObject(DatabaseObject example) {
+//        if (example == null) {
+//            return false;
+//        }
+//
+//        if (this.isLiquibaseObject(example)) {
+//            return false;
+//        }
+//
+//        if (example instanceof Schema) {
+//            //noinspection HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral
+//            if ("SYSTEM".equals(example.getName()) || "SYS".equals(example.getName()) || "CTXSYS".equals(example.getName()) || "XDB".equals(example.getName())) {
+//                return true;
+//            }
+//            //noinspection HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral
+//            if ("SYSTEM".equals(example.getSchema().getCatalogName()) || "SYS".equals(example.getSchema().getCatalogName()) || "CTXSYS".equals(example.getSchema().getCatalogName()) || "XDB".equals(example.getSchema().getCatalogName())) {
+//                return true;
+//            }
+//        } else if (isSystemObject(example.getSchema())) {
+//            return true;
+//        }
+//        if (example instanceof Catalog) {
+//            //noinspection HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral,HardCodedStringLiteral
+//            if (("SYSTEM".equals(example.getName()) || "SYS".equals(example.getName()) || "CTXSYS".equals(example.getName()) || "XDB".equals(example.getName()))) {
+//                return true;
+//            }
+//        } else if (example.getName() != null) {
+//            //noinspection HardCodedStringLiteral
+//            if (example.getName().startsWith("BIN$")) { //oracle deleted table
+//                boolean filteredInOriginalQuery = this.canAccessDbaRecycleBin();
+//                if (!filteredInOriginalQuery) {
+//                    filteredInOriginalQuery = StringUtil.trimToEmpty(example.getSchema().getName()).equalsIgnoreCase(this.getConnection().getConnectionUserName());
+//                }
+//
+//                if (filteredInOriginalQuery) {
+//                    return !((example instanceof PrimaryKey) || (example instanceof Index) || (example instanceof
+//                            liquibase.statement.UniqueConstraint));
+//                } else {
+//                    return true;
+//                }
+//            } else //noinspection HardCodedStringLiteral
+//                if (example.getName().startsWith("AQ$")) { //oracle AQ tables
+//                    return true;
+//                } else //noinspection HardCodedStringLiteral
+//                    if (example.getName().startsWith("DR$")) { //oracle index tables
+//                        return true;
+//                    } else //noinspection HardCodedStringLiteral
+//                        if (example.getName().startsWith("SYS_IOT_OVER")) { //oracle system table
+//                            return true;
+//                        } else //noinspection HardCodedStringLiteral,HardCodedStringLiteral
+//                            if ((example.getName().startsWith("MDRT_") || example.getName().startsWith("MDRS_")) && example.getName().endsWith("$")) {
+//                                // CORE-1768 - Oracle creates these for spatial indices and will remove them when the index is removed.
+//                                return true;
+//                            } else //noinspection HardCodedStringLiteral
+//                                if (example.getName().startsWith("MLOG$_")) { //Created by materliaized view logs for every table that is part of a materialized view. Not available for DDL operations.
+//                                    return true;
+//                                } else //noinspection HardCodedStringLiteral
+//                                    if (example.getName().startsWith("RUPD$_")) { //Created by materialized view log tables using primary keys. Not available for DDL operations.
+//                                        return true;
+//                                    } else //noinspection HardCodedStringLiteral
+//                                        if (example.getName().startsWith("WM$_")) { //Workspace Manager backup tables.
+//                                            return true;
+//                                        } else //noinspection HardCodedStringLiteral
+//                                            if ("CREATE$JAVA$LOB$TABLE".equals(example.getName())) { //This table contains the name of the Java object, the date it was loaded, and has a BLOB column to store the Java object.
+//                                                return true;
+//                                            } else //noinspection HardCodedStringLiteral
+//                                                if ("JAVA$CLASS$MD5$TABLE".equals(example.getName())) { //This is a hash table that tracks the loading of Java objects into a schema.
+//                                                    return true;
+//                                                } else //noinspection HardCodedStringLiteral
+//                                                    if (example.getName().startsWith("ISEQ$$_")) { //System-generated sequence
+//                                                        return true;
+//                                                    } else //noinspection HardCodedStringLiteral
+//                                                        if (example.getName().startsWith("USLOG$")) { //for update materialized view
+//                                                            return true;
+//                                                        } else if (example.getName().startsWith("SYS_FBA")) { //for Flashback tables
+//                                                            return true;
+//                                                        }
+//        }
+//
+//        return super.isSystemObject(example);
+//    }
 
     @Override
     public boolean supportsTablespaces() {
@@ -583,12 +584,12 @@ public class DmDatabase extends AbstractJdbcDatabase {
         return "Liquibase needs to access the DBA_RECYCLEBIN table so we can automatically handle the case where " +
                 "constraints are deleted and restored. Since Oracle doesn't properly restore the original table names " +
                 "referenced in the constraint, we use the information from the DBA_RECYCLEBIN to automatically correct this" +
-                " issue.\n" +
-                "\n" +
+                " issue. " +
+                " " +
                 "The user you used to connect to the database (" + getConnection().getConnectionUserName() +
                 ") needs to have \"SELECT ON SYS.DBA_RECYCLEBIN\" permissions set before we can perform this operation. " +
-                "Please run the following SQL to set the appropriate permissions, and try running the command again.\n" +
-                "\n" +
+                "Please run the following SQL to set the appropriate permissions, and try running the command again. " +
+                " " +
                 "     GRANT SELECT ON SYS.DBA_RECYCLEBIN TO " + getConnection().getConnectionUserName() + ";";
     }
 
@@ -677,5 +678,57 @@ public class DmDatabase extends AbstractJdbcDatabase {
             return "NUMBER(*, 0)";
         }
         return super.correctObjectName(objectName, objectType);
+    }
+
+    @Override
+    public String getUniqueConstraints(String catalogName, String schemaName, String tableName) {
+        String sql = "SELECT " +
+                "    c.table_name as TABLE_NAME, " +
+                "    c.constraint_name as CONSTRAINT_NAME," +
+                "    c.constraint_type, " +
+                "    col.column_name " +
+                "FROM " +
+                "    user_constraints c " +
+                "JOIN " +
+                "    user_cons_columns col ON c.constraint_name = col.constraint_name " +
+                "WHERE " +
+                "    c.constraint_type = 'U' " +
+                "    AND c.owner = '" + schemaName + "' " +
+                "ORDER BY " +
+                "    c.table_name, c.constraint_name, col.position";
+        if (tableName != null) {
+            sql += " and c.table_name='" + tableName + "'";
+        }
+        return sql;
+    }
+
+    @Override
+    public String getConstraintList(String catalogName, String schemaName, String constraintName, String tableName, boolean bulkQuery) {
+        String sql = "SELECT " +
+                "    c.constraint_name, " +
+                "    c.table_name, " +
+                "    col.column_name, " +
+                "    c.owner AS constraint_container " +
+                "FROM " +
+                "    user_constraints c " +
+                "JOIN " +
+                "    user_cons_columns col ON c.constraint_name = col.constraint_name " +
+                "WHERE " +
+                "    c.constraint_type = 'U' " +
+                "    AND c.owner = '" + schemaName + "' ";
+        if (!bulkQuery) {
+            if (tableName != null) {
+                sql += " AND c.table_name ='" + tableName + "' ";
+            }
+            if (constraintName != null) {
+                sql += " AND c.constraint_name ='" + constraintName + "'";
+            }
+        }
+        return sql;
+    }
+
+    @Override
+    public boolean supportsColumnRemarks() {
+        return true;
     }
 }

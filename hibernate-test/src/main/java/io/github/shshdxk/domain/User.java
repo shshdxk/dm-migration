@@ -1,12 +1,12 @@
 package io.github.shshdxk.domain;
 
 import io.github.shshdxk.enums.Gender;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Comment;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
@@ -15,6 +15,7 @@ import javax.persistence.Table;
 @Table(name = User.TABLE_NAME, uniqueConstraints = {
         @UniqueConstraint(name = "U_USERS_USERNAME", columnNames = {"username"}),
         @UniqueConstraint(name = "U_USERS_MOBILE", columnNames = {"mobile"}),})
+@org.hibernate.annotations.Table(appliesTo = User.TABLE_NAME, comment = "用户表")
 public class User extends UpdatableEntity {
 
     public static final String TABLE_NAME = "ih_users";
@@ -101,4 +102,5 @@ public class User extends UpdatableEntity {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
 }

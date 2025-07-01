@@ -23,6 +23,28 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>2.7.18</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.7.18</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <version>2.7.18</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.github.shshdxk</groupId>
             <artifactId>dm-migration</artifactId>
         </dependency>
@@ -51,6 +73,23 @@
             <version>4.22.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>10.2.3.jre8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dameng</groupId>
+            <artifactId>DmJdbcDriver18</artifactId>
+            <version>8.1.3.140</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dm</groupId>
+            <artifactId>DmDialect-for-hibernate</artifactId>
+            <version>5.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/org/dm/DmDialect-for-hibernate/5.4/DmDialect-for-hibernate-5.4.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
@@ -60,6 +99,7 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.22.0</version>
                 <configuration>
+                    <driverPropertiesFile>src/main/resources/config/liquibase/dm/liquibase-dm.properties</driverPropertiesFile>
                     <propertyFile>src/main/resources/config/liquibase/dm/liquibase-dm.properties</propertyFile>
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
                     <diffChangeLogFile>src/main/resources/config/liquibase/dm/changelog/diff_${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
@@ -89,9 +129,14 @@
                         <version>2.7.18</version>
                     </dependency>
                     <dependency>
+                        <groupId>com.microsoft.sqlserver</groupId>
+                        <artifactId>mssql-jdbc</artifactId>
+                        <version>10.2.3.jre8</version>
+                    </dependency>
+                    <dependency>
                         <groupId>com.dameng</groupId>
                         <artifactId>DmJdbcDriver18</artifactId>
-                        <version>8.1.1.193</version>
+                        <version>8.1.3.140</version>
                     </dependency>
                     <dependency>
                         <groupId>org.dm</groupId>
@@ -100,17 +145,11 @@
                         <scope>system</scope>
                         <systemPath>${project.basedir}/../lib/org/dm/DmDialect-for-hibernate/5.4/DmDialect-for-hibernate-5.4.jar</systemPath>
                     </dependency>
-
                     <dependency>
                         <groupId>io.github.shshdxk</groupId>
-                        <artifactId>dm-liquibase</artifactId>
-                        <version>2.7.0</version>
+                        <artifactId>dm-migration</artifactId>
+                        <version>${project.version}</version>
                     </dependency>
-<!--                    <dependency>-->
-<!--                        <groupId>io.github.shshdxk</groupId>-->
-<!--                        <artifactId>dm-migration</artifactId>-->
-<!--                        <version>${project.version}</version>-->
-<!--                    </dependency>-->
                 </dependencies>
             </plugin>
         </plugins>

@@ -1,0 +1,17 @@
+server:
+  port: 12345
+
+spring:
+  datasource:
+    url: jdbc:dm://192.168.23.137:5236/UAT
+    username: SYSDBA
+    password: SYSdba001
+    dialect: org.hibernate.dialect.DmDialect
+    driverclassname: dm.jdbc.driver.DmDriver
+
+#spring:
+#  datasource:
+#    url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=UAT;trustServerCertificate=true
+#    username: sa
+#    password: Zzw123456
+#    driverclassname: com.microsoft.sqlserver.jdbc.SQLServerDriver

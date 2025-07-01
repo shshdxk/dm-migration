@@ -1,7 +1,6 @@
 package io.github.shshdxk.domain;
 
 import io.github.shshdxk.enums.UserSettingKey;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
@@ -12,6 +11,7 @@ import javax.persistence.*;
         @UniqueConstraint(name = "U_USER_SETTINGS_KEY", columnNames = { "user_id", "setting_key" })
     }
 )
+@org.hibernate.annotations.Table(appliesTo = User.TABLE_NAME, comment = "用户设置表")
 public class UserSetting extends UpdatableEntity {
 
     public static final String TABLE_NAME = "ih_user_settings";
@@ -31,6 +31,27 @@ public class UserSetting extends UpdatableEntity {
     @Column(name = "setting_value", length = 2000)
     private String value;
 
-    protected UserSetting() {}
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public UserSettingKey getKey() {
+        return key;
+    }
+
+    public void setKey(UserSettingKey key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }
