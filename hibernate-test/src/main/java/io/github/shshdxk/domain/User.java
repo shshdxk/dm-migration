@@ -1,7 +1,9 @@
 package io.github.shshdxk.domain;
 
 import io.github.shshdxk.enums.Gender;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,11 +26,13 @@ public class User extends UpdatableEntity {
     private String username;
 
     @Comment("联系方式")
-    @Column(name = "mobile", length = 20, nullable = false)
-    private String mobile;
+    @Column(name = "mobile")
+    @ColumnDefault("-1")
+    private int mobile;
 
     @Comment("全称")
-    @Column(name = "full_name", length = 128)
+    @Column(name = "full_name")
+    @Type(type = "org.hibernate.type.TextType")
     private String fullName;
 
     @Comment("密码")
@@ -37,6 +41,7 @@ public class User extends UpdatableEntity {
 
     @Comment("是否锁定")
     @Column(name = "is_locked")
+    @ColumnDefault("false")
     private boolean locked = false;
 
     @Comment("性别")
@@ -47,6 +52,11 @@ public class User extends UpdatableEntity {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    @Comment("是否删除")
+    @Column(name = "is_deleted")
+    @ColumnDefault("0")
+    private boolean deleted = false;
+
     public String getUsername() {
         return username;
     }
@@ -55,11 +65,11 @@ public class User extends UpdatableEntity {
         this.username = username;
     }
 
-    public String getMobile() {
+    public int getMobile() {
         return mobile;
     }
 
-    public void setMobile(String mobile) {
+    public void setMobile(int mobile) {
         this.mobile = mobile;
     }
 
@@ -103,4 +113,11 @@ public class User extends UpdatableEntity {
         this.avatarUrl = avatarUrl;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

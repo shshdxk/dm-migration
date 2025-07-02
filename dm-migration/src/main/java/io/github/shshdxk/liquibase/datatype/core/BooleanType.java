@@ -24,4 +24,23 @@ public class BooleanType extends liquibase.datatype.core.BooleanType {
         }
         return super.toDatabaseDataType(database);
     }
+
+    @Override
+    public String objectToSql(Object value, Database database) {
+        if ((value == null) || "null".equals(value.toString().toLowerCase(Locale.US))) {
+            return null;
+        }
+        if (database instanceof DmDatabase) {
+            if (value instanceof Boolean) {
+                if (((Boolean) value)) {
+                    return "1";
+                } else {
+                    return "0";
+                }
+            }
+        }
+        return super.objectToSql(value, database);
+    }
+
+
 }

@@ -2,7 +2,7 @@ liquibase.datatype.core.BigIntType
 liquibase.datatype.core.BlobType
 io.github.shshdxk.liquibase.datatype.core.BooleanType
 liquibase.datatype.core.CharType
-liquibase.datatype.core.ClobType
+io.github.shshdxk.liquibase.datatype.core.ClobType
 liquibase.datatype.core.CurrencyType
 liquibase.datatype.core.DatabaseFunctionType
 liquibase.datatype.core.DateTimeType

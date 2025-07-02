@@ -81,6 +81,18 @@ public class DmDatabase extends AbstractJdbcDatabase {
         return PRIORITY_DEFAULT;
     }
 
+    @Override
+    protected String getQuotingStartCharacter() {
+        return "\""; // objects in mysql are always case sensitive
+
+    }
+
+    @Override
+    protected String getQuotingEndCharacter() {
+        return "\""; // objects in mysql are always case sensitive
+    }
+
+
     private void tryProxySession(final String url, final Connection con) {
         Matcher m = PROXY_USER_PATTERN.matcher(url);
         if (m.matches()) {

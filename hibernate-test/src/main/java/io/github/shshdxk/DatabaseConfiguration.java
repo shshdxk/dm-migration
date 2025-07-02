@@ -17,7 +17,7 @@ public class DatabaseConfiguration {
     private SpringLiquibase runLiquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase() {};
         liquibase.setContexts(null);
-        liquibase.setDefaultSchema("UAT");
+        liquibase.setDefaultSchema("TEXT");
         liquibase.setDropFirst(false);
         liquibase.setDataSource(dataSource);
         liquibase.setChangeLog("classpath:config/liquibase/master.xml");
