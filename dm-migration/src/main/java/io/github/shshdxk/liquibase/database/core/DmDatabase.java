@@ -705,18 +705,21 @@ public class DmDatabase extends AbstractJdbcDatabase {
                 "    user_cons_columns col ON c.constraint_name = col.constraint_name " +
                 "WHERE " +
                 "    c.constraint_type = 'U' " +
-                "    AND c.owner = '" + schemaName + "' " +
-                "ORDER BY " +
-                "    c.table_name, c.constraint_name, col.position";
-        if (tableName != null) {
-            sql += " and c.table_name='" + tableName + "'";
-        }
+                "    AND col.owner = '" + schemaName + "' " +
+                "    AND c.owner = '" + schemaName + "' ";
+
+                if (tableName != null) {
+                    sql += " and c.table_name='" + tableName + "' ";
+                }
+//                sql = sql + "GROUP BY c.table_name, c.constraint_name, c.constraint_type, col.column_name, col.position ";
+                sql = sql +         "ORDER BY " +
+                        "    c.table_name, c.constraint_name, col.position ";
         return sql;
     }
 
     @Override
     public String getConstraintList(String catalogName, String schemaName, String constraintName, String tableName, boolean bulkQuery) {
-        String sql = "SELECT " +
+        String sql = "SELECT DISTINCT " +
                 "    c.constraint_name, " +
                 "    c.table_name, " +
                 "    col.column_name, " +
@@ -727,7 +730,8 @@ public class DmDatabase extends AbstractJdbcDatabase {
                 "    user_cons_columns col ON c.constraint_name = col.constraint_name " +
                 "WHERE " +
                 "    c.constraint_type = 'U' " +
-                "    AND c.owner = '" + schemaName + "' ";
+                "    AND c.owner = '" + schemaName + "' " +
+                "    AND col.owner = '" + schemaName + "' ";
         if (!bulkQuery) {
             if (tableName != null) {
                 sql += " AND c.table_name ='" + tableName + "' ";
