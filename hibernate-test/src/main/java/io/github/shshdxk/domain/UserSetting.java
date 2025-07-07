@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = UserSetting.TABLE_NAME,
     uniqueConstraints = {
-        @UniqueConstraint(name = "U_USER_SETTINGS_KEY", columnNames = { "user_id", "setting_key" })
+//        @UniqueConstraint(name = "U_USER_SETTINGS_KEY", columnNames = { "user_id", "setting_key" }),
+            @UniqueConstraint(name = "U_USER_SETTINGS_USE_ID", columnNames = { "user_id" })
     }
 )
 @org.hibernate.annotations.Table(appliesTo = UserSetting.TABLE_NAME, comment = "用户设置表")
@@ -18,7 +19,7 @@ public class UserSetting extends UpdatableEntity {
 
     @Comment("用户")
     @JoinColumn(name = "user_id", nullable = false,
-            foreignKey = @ForeignKey(name = "FK_USER_SETTING_USER_ID"))
+            foreignKey = @ForeignKey(name = "FK_USER_SETTING_USER_ID1"))
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 

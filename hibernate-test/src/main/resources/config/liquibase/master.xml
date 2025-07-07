@@ -2,9 +2,11 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.22.xsd">
 
     <include file="./config/liquibase/dm/changelog/diff_20250116072016_changelog.xml" relativeToChangelogFile="false"/>
+<!--    <include file="./config/liquibase/dm/changelog/diff_20250704033511_changelog.xml" relativeToChangelogFile="false"/>-->
+<!--    <include file="./config/liquibase/dm/changelog/diff_20250701092353_changelog.xml" relativeToChangelogFile="false"/>-->
 <!--    <include file="./config/liquibase/dm/changelog/diff_20250117073337_changelog.xml" relativeToChangelogFile="false"/>-->
 <!--    <include file="./config/liquibase/dm/changelog/diff_20250701072746_changelog.xml" relativeToChangelogFile="false"/>-->
 

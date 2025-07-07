@@ -17,10 +17,13 @@ import liquibase.util.SqlUtil;
 import liquibase.util.StringUtil;
 import org.hibernate.boot.Metadata;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.PostgreSQL81Dialect;
 import org.hibernate.id.ExportableColumn;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.type.descriptor.converter.AttributeConverterTypeAdapter;
 
+import java.sql.Types;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -102,14 +105,28 @@ public class ColumnSnapshotGenerator extends HibernateSnapshotGenerator {
             if (hibernateColumn.getName().equalsIgnoreCase(column.getName())) {
 
                 String defaultValue = null;
+//                hibernateColumn.setSqlType();
                 String hibernateType = hibernateColumn.getSqlType(dialect, metadata);
-                Matcher defaultValueMatcher = Pattern.compile("(?i) DEFAULT\\s+(.*)").matcher(hibernateType);
-                if (defaultValueMatcher.find()) {
-                    defaultValue = defaultValueMatcher.group(1);
-                    hibernateType = hibernateType.replace(defaultValueMatcher.group(0), "");
+                Integer dataTypeId = hibernateColumn.getSqlTypeCode();
+                if (!hibernateType.toLowerCase().contains("text") && hibernateColumn.getValue() instanceof SimpleValue
+                        && hibernateColumn.getValue().getType() instanceof AttributeConverterTypeAdapter
+                        && hibernateColumn.getLength() == Integer.MAX_VALUE) {
+//                    ((SimpleValue) hibernateColumn.getValue()).setTypeName("org.hibernate.type.TextType");
+                    if (dialect instanceof MySQLDialect) {
+                        hibernateType = "longtext";
+                    } else {
+                        hibernateType = "text";
+                    }
+                    dataTypeId = Types.CLOB;
+                } else {
+                    Matcher defaultValueMatcher = Pattern.compile("(?i) DEFAULT\\s+(.*)").matcher(hibernateType);
+                    if (defaultValueMatcher.find()) {
+                        defaultValue = defaultValueMatcher.group(1);
+                        hibernateType = hibernateType.replace(defaultValueMatcher.group(0), "");
+                    }
                 }
 
-                DataType dataType = toDataType(hibernateType, hibernateColumn.getSqlTypeCode());
+                DataType dataType = toDataType(hibernateType, dataTypeId);
                 if (dataType == null) {
                     throw new DatabaseException("Unable to find column data type for column " + hibernateColumn.getName());
                 }
