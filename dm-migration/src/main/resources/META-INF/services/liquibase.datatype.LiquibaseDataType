@@ -21,5 +21,5 @@ liquibase.datatype.core.TimestampType
 liquibase.datatype.core.TinyIntType
 liquibase.datatype.core.UUIDType
 liquibase.datatype.core.UnknownType
-liquibase.datatype.core.VarcharType
+io.github.shshdxk.liquibase.datatype.core.VarcharType
 liquibase.datatype.core.XMLType

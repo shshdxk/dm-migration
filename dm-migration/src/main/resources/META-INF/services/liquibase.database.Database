@@ -19,3 +19,8 @@ liquibase.database.core.SybaseASADatabase
 liquibase.database.core.SybaseDatabase
 liquibase.database.core.UnsupportedDatabase
 io.github.shshdxk.liquibase.database.core.DmDatabase
+io.github.shshdxk.liquibase.database.HibernateClassicDatabase
+io.github.shshdxk.liquibase.database.HibernateEjb3Database
+io.github.shshdxk.liquibase.database.HibernateSpringBeanDatabase
+io.github.shshdxk.liquibase.database.HibernateSpringPackageDatabase
+io.github.shshdxk.liquibase.database.JpaPersistenceDatabase

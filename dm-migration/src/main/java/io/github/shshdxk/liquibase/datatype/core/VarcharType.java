@@ -9,6 +9,12 @@ import liquibase.datatype.LiquibaseDataType;
 public class VarcharType extends liquibase.datatype.core.VarcharType {
     @Override
     public DatabaseDataType toDatabaseDataType(Database database) {
+//        String originalDefinition = StringUtil.trimToEmpty(getRawDefinition());
+//        if ((database instanceof DmDatabase)) {
+//            if (originalDefinition.toLowerCase(Locale.US).startsWith("text")) {
+//                return new DatabaseDataType("TEXT");
+//            }
+//        }
         return super.toDatabaseDataType(database);
     }
 

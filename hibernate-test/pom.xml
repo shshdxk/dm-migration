@@ -95,6 +95,11 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.liquibase.ext</groupId>-->
+<!--            <artifactId>liquibase-hibernate5</artifactId>-->
+<!--            <version>4.22.0</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -107,17 +112,17 @@
                     <driverPropertiesFile>src/main/resources/config/liquibase/dm/liquibase-dm.properties</driverPropertiesFile>
                     <propertyFile>src/main/resources/config/liquibase/dm/liquibase-dm.properties</propertyFile>
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
-                    <diffChangeLogFile>src/main/resources/config/liquibase/dm/changelog/diff_${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                    <diffChangeLogFile>src/main/resources/config/liquibase/mysql/changelog/diff_${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <outputChangeLogFile>src/main/resources/config/liquibase/output.xml</outputChangeLogFile>
                     <verbose>true</verbose>
                     <logging>debug</logging>
                 </configuration>
                 <dependencies>
-                    <dependency>
-                        <groupId>org.liquibase.ext</groupId>
-                        <artifactId>liquibase-hibernate5</artifactId>
-                        <version>${liquibase-hibernate5.version}</version>
-                    </dependency>
+<!--                    <dependency>-->
+<!--                        <groupId>org.liquibase.ext</groupId>-->
+<!--                        <artifactId>liquibase-hibernate5</artifactId>-->
+<!--                        <version>${liquibase-hibernate5.version}</version>-->
+<!--                    </dependency>-->
                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-core</artifactId>
