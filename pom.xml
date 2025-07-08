@@ -6,7 +6,7 @@
 
     <groupId>io.github.shshdxk</groupId>
     <artifactId>dm-migration-parent</artifactId>
-    <version>0.0.1</version>
+    <version>4.22.0</version>
     <packaging>pom</packaging>
     <name>dm-migration-parent</name>
 
