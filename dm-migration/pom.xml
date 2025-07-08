@@ -19,7 +19,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.liquibase</groupId>
+            <groupId>io.github.shshdxk</groupId>
             <artifactId>liquibase-core</artifactId>
             <scope>compile</scope>
             <version>${liquibase.version}</version>

@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="60902 (generated)" id="1751361577270-1">
+    <changeSet author="60902 (generated)" id="1751592267885-1">
         <createTable remarks="用户设置表" tableName="ih_user_settings">
             <column name="id" remarks="主键" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="ih_user_settingsPK"/>
@@ -18,7 +18,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1751361577270-2">
+    <changeSet author="60902 (generated)" id="1751592267885-2">
         <createTable remarks="用户表" tableName="ih_users">
             <column name="id" remarks="主键" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="ih_usersPK"/>
@@ -30,30 +30,34 @@
                 <constraints nullable="false"/>
             </column>
             <column name="avatar_url" remarks="头像URL" type="VARCHAR(255)"/>
-            <column name="full_name" remarks="全称" type="VARCHAR(128)"/>
+            <column defaultValueComputed="0" name="is_deleted" remarks="是否删除" type="BIT"/>
+            <column name="full_name" remarks="全称" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
             <column name="gender" remarks="性别" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_locked" remarks="是否锁定" type="BIT"/>
-            <column name="mobile" remarks="联系方式" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="password_hash" remarks="密码" type="VARCHAR(255)"/>
+            <column defaultValueBoolean="false" name="is_locked" remarks="是否锁定" type="BIT"/>
+            <column defaultValue="-1" name="mobile" remarks="联系方式" type="VARCHAR(255)"/>
+            <column name="password_hash" remarks=" 密码" type="VARCHAR(255)"/>
             <column name="username" remarks="名称" type="VARCHAR(32)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1751361577270-3">
+    <changeSet author="60902 (generated)" id="1751592267885-3">
         <addUniqueConstraint columnNames="mobile" constraintName="U_USERS_MOBILE" tableName="ih_users"/>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1751361577270-4">
+    <changeSet author="60902 (generated)" id="1751592267885-4">
         <addUniqueConstraint columnNames="username" constraintName="U_USERS_USERNAME" tableName="ih_users"/>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1751361577270-5">
-        <addUniqueConstraint columnNames="user_id, setting_key" constraintName="U_USER_SETTINGS_KEY" tableName="ih_user_settings"/>
+    <changeSet author="60902 (generated)" id="1751592267885-5">
+        <addUniqueConstraint columnNames="user_id" constraintName="U_USER_SETTINGS_USE_ID" tableName="ih_user_settings"/>
     </changeSet>
-    <changeSet author="60902 (generated)" id="1751361577270-6">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="ih_user_settings" constraintName="FK_USER_SETTING_USER_ID" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="ih_users" validate="true"/>
+    <changeSet author="60902 (generated)" id="1751592267885-6">
+        <addUniqueConstraint columnNames="avatar_url" constraintName="u_users_avatarurl" tableName="ih_users"/>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1751592267885-7">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="ih_user_settings" constraintName="FK_USER_SETTING_USER_ID1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="ih_users" validate="true"/>
     </changeSet>
 </databaseChangeLog>

@@ -1,0 +1,10 @@
+io.github.shshdxk.hibernate.snapshot.CatalogSnapshotGenerator
+io.github.shshdxk.hibernate.snapshot.ColumnSnapshotGenerator
+io.github.shshdxk.hibernate.snapshot.ForeignKeySnapshotGenerator
+io.github.shshdxk.hibernate.snapshot.IndexSnapshotGenerator
+io.github.shshdxk.hibernate.snapshot.PrimaryKeySnapshotGenerator
+io.github.shshdxk.hibernate.snapshot.SchemaSnapshotGenerator
+io.github.shshdxk.hibernate.snapshot.SequenceSnapshotGenerator
+io.github.shshdxk.hibernate.snapshot.TableSnapshotGenerator
+io.github.shshdxk.hibernate.snapshot.UniqueConstraintSnapshotGenerator
+io.github.shshdxk.hibernate.snapshot.ViewSnapshotGenerator

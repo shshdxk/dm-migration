@@ -18,7 +18,7 @@ import java.util.List;
 @org.hibernate.annotations.Table(appliesTo = User.TABLE_NAME, comment = "用户表")
 public class User extends UpdatableEntity {
 
-    public static final String TABLE_NAME = "ih_usersa";
+    public static final String TABLE_NAME = "ih_users";
     @Comment("名称")
     @Column(name = "username", nullable = false, length = 32)
     private String username;

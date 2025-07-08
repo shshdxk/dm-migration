@@ -1,5 +1,0 @@
-io.github.shshdxk.liquibase.diff.ChangedColumnChangeGenerator
-io.github.shshdxk.liquibase.diff.ChangedForeignKeyChangeGenerator
-io.github.shshdxk.liquibase.diff.ChangedSequenceChangeGenerator
-io.github.shshdxk.liquibase.diff.MissingSequenceChangeGenerator
-io.github.shshdxk.liquibase.diff.UnexpectedIndexChangeGenerator
