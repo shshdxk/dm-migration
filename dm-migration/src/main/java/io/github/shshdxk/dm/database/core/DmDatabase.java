@@ -8,7 +8,6 @@ import io.github.shshdxk.liquibase.database.DatabaseConnection;
 import io.github.shshdxk.liquibase.database.OfflineConnection;
 import io.github.shshdxk.liquibase.database.jvm.JdbcConnection;
 import io.github.shshdxk.liquibase.exception.DatabaseException;
-import io.github.shshdxk.liquibase.exception.UnexpectedLiquibaseException;
 import io.github.shshdxk.liquibase.exception.ValidationErrors;
 import io.github.shshdxk.liquibase.executor.ExecutorService;
 import io.github.shshdxk.liquibase.statement.DatabaseFunction;
@@ -17,36 +16,24 @@ import io.github.shshdxk.liquibase.statement.SequenceNextValueFunction;
 import io.github.shshdxk.liquibase.statement.core.RawCallStatement;
 import io.github.shshdxk.liquibase.statement.core.RawParameterizedSqlStatement;
 import io.github.shshdxk.liquibase.structure.DatabaseObject;
-import io.github.shshdxk.liquibase.structure.core.*;
+import io.github.shshdxk.liquibase.structure.core.Column;
+import io.github.shshdxk.liquibase.structure.core.Schema;
 import io.github.shshdxk.liquibase.util.JdbcUtil;
 import io.github.shshdxk.liquibase.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.Method;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static java.util.ResourceBundle.getBundle;
 
 /**
  * Encapsulates Oracle database support.
  */
 public class DmDatabase extends AbstractJdbcDatabase {
 
-    private static final String PROXY_USER_REGEX = ".*(?:thin|oci)\\:(.+)/@.*";
-	public static final Pattern PROXY_USER_PATTERN = Pattern.compile(PROXY_USER_REGEX);
-
-    private static final String VERSION_REGEX = "(\\d+)\\.(\\d+)\\..*";
-    private static final Pattern VERSION_PATTERN = Pattern.compile(VERSION_REGEX);
-
     public static final String PRODUCT_NAME = "DM DBMS";
-    private static final ResourceBundle coreBundle = getBundle("liquibase/i18n/liquibase-core");
-    protected final int SHORT_IDENTIFIERS_LENGTH = 30;
     protected final int LONG_IDENTIFIERS_LEGNTH = 128;
-    public static final int ORACLE_12C_MAJOR_VERSION = 12;
-    public static final int ORACLE_23C_MAJOR_VERSION = 23;
 
     private final Set<String> reservedWords = new HashSet<>();
     private Set<String> userDefinedTypes;
@@ -92,32 +79,6 @@ public class DmDatabase extends AbstractJdbcDatabase {
         return "\""; // objects in mysql are always case sensitive
     }
 
-
-    private void tryProxySession(final String url, final Connection con) {
-        Matcher m = PROXY_USER_PATTERN.matcher(url);
-        if (m.matches()) {
-            Properties props = new Properties();
-            props.put("PROXY_USER_NAME", m.group(1));
-            try {
-                Method method = con.getClass().getMethod("openProxySession", int.class, Properties.class);
-                method.setAccessible(true);
-                method.invoke(con, 1, props);
-            } catch (Exception e) {
-                Scope.getCurrentScope().getLog(getClass()).info("Could not open proxy session on OracleDatabase: " + e.getCause().getMessage());
-                return;
-            }
-            try {
-                Method method = con.getClass().getMethod("isProxySession");
-                method.setAccessible(true);
-                boolean b = (boolean)method.invoke(con);
-                if (! b) {
-                    Scope.getCurrentScope().getLog(getClass()).info("Proxy session not established on OracleDatabase: ");
-                }
-            } catch (Exception e) {
-                Scope.getCurrentScope().getLog(getClass()).info("Could not open proxy session on OracleDatabase: " + e.getCause().getMessage());
-            }
-        }
-    }
 
 //    @Override
 //    public void setConnection(DatabaseConnection conn) {
@@ -640,46 +601,8 @@ public class DmDatabase extends AbstractJdbcDatabase {
         return true;
     }
 
-    /**
-     * Tests if the given String would be a valid identifier in Oracle DBMS. In Oracle, a valid identifier has
-     * the following form (case-insensitive comparison):
-     * 1st character: A-Z
-     * 2..n characters: A-Z0-9$_#
-     * The maximum length of an identifier differs by Oracle version and object type.
-     */
-    public boolean isValidOracleIdentifier(String identifier, Class<? extends DatabaseObject> type) {
-        if ((identifier == null) || (identifier.length() < 1))
-            return false;
-
-        if (!identifier.matches("^(i?)[A-Z][A-Z0-9\\$\\_\\#]*$"))
-            return false;
-
-        /*
-         * @todo It seems we currently do not have a class for tablespace identifiers, and all other classes
-         * we do know seem to be supported as 12cR2 long identifiers, so:
-         */
-        return (identifier.length() <= LONG_IDENTIFIERS_LEGNTH);
-    }
-
-    /**
-     * Returns the maximum number of bytes (NOT: characters) for an identifier. For Oracle <=12c Release 20, this
-     * is 30 bytes, and starting from 12cR2, up to 128 (except for tablespaces, PDB names and some other rather rare
-     * object types).
-     *
-     * @return the maximum length of an object identifier, in bytes
-     */
     public int getIdentifierMaximumLength() {
-        try {
-            if (getDatabaseMajorVersion() < ORACLE_12C_MAJOR_VERSION) {
-                return SHORT_IDENTIFIERS_LENGTH;
-            } else if ((getDatabaseMajorVersion() == ORACLE_12C_MAJOR_VERSION) && (getDatabaseMinorVersion() <= 1)) {
-                return SHORT_IDENTIFIERS_LENGTH;
-            } else {
-                return LONG_IDENTIFIERS_LEGNTH;
-            }
-        } catch (DatabaseException ex) {
-            throw new UnexpectedLiquibaseException("Cannot determine the Oracle database version number", ex);
-        }
+        return LONG_IDENTIFIERS_LEGNTH;
 
     }
 

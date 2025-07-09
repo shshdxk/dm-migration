@@ -1,6 +1,1 @@
 io.github.shshdxk.dm.database.core.DmDatabase
-io.github.shshdxk.hibernate.database.HibernateClassicDatabase
-io.github.shshdxk.hibernate.database.HibernateEjb3Database
-io.github.shshdxk.hibernate.database.HibernateSpringBeanDatabase
-io.github.shshdxk.hibernate.database.HibernateSpringPackageDatabase
-io.github.shshdxk.hibernate.database.JpaPersistenceDatabase

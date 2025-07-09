@@ -42,6 +42,7 @@ public class HibernateSpringBeanDatabase extends HibernateDatabase {
     @Override
     protected Metadata buildMetadataFromPath() throws DatabaseException {
         loadBeanDefinition();
+        checkOperation();
         return super.buildMetadataFromPath();
     }
 

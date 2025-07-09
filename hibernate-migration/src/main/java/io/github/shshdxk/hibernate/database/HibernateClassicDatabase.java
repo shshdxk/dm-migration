@@ -35,7 +35,7 @@ public class HibernateClassicDatabase extends HibernateDatabase {
     protected Metadata buildMetadataFromPath() throws DatabaseException {
         this.configuration = new Configuration();
         this.configuration.configure(getHibernateConnection().getPath());
-
+        checkOperation();
         return super.buildMetadataFromPath();
     }
 

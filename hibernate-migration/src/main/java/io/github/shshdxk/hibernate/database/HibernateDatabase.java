@@ -20,10 +20,14 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
+import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -69,9 +73,7 @@ public abstract class HibernateDatabase extends AbstractJdbcDatabase {
 
         try {
             Scope.getCurrentScope().getLog(getClass()).info("Reading hibernate configuration " + getConnection().getURL());
-
             this.metadata = buildMetadata();
-
             afterSetup();
         } catch (DatabaseException e) {
             throw new UnexpectedLiquibaseException(e);
@@ -97,9 +99,23 @@ public abstract class HibernateDatabase extends AbstractJdbcDatabase {
      * Return the hibernate {@link Metadata} used by this database.
      */
     public Metadata getMetadata() throws DatabaseException {
+        metadata.getDatabase().getNamespaces().forEach(namespace -> {
+            Collection<Table> tables = namespace.getTables();
+            List<Table> table = new ArrayList<>();
+            int i = 0;
+            for (Table table1 : tables) {
+                i++;
+                if (i >= 300) {
+                    table.add(table1);
+                }
+            }
+            tables.removeAll(table);
+        });
         return metadata;
     }
 
+    protected void checkOperation() {
+    }
 
     /**
      * Convenience method to return the underlying HibernateConnection in the JdbcConnection returned by {@link #getConnection()}
@@ -161,6 +177,7 @@ public abstract class HibernateDatabase extends AbstractJdbcDatabase {
         if (thrown != null) {
             throw new DatabaseException(thrown);
         }
+        checkOperation();
         return result.get();
     }
 

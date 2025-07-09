@@ -68,7 +68,7 @@ public class HibernateEjb3Database extends HibernateDatabase {
             Scope.getCurrentScope().getLog(getClass()).info("Could not determine hibernate dialect, using HibernateGenericDialect");
             dialect = new HibernateGenericDialect();
         }
-
+        checkOperation();
         return metadata;
     }
 

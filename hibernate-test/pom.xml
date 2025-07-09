@@ -15,13 +15,17 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <liquibase-hibernate5.version>4.22.0</liquibase-hibernate5.version>
         <hibernate.version>5.6.15.Final</hibernate.version>
         <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -109,6 +113,7 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.22.0</version>
                 <configuration>
+<!--                    <diffExcludeObjects>table:.*n.*,</diffExcludeObjects>-->
                     <driverPropertiesFile>src/main/resources/config/liquibase/dm/liquibase-dm.properties</driverPropertiesFile>
                     <propertyFile>src/main/resources/config/liquibase/dm/liquibase-dm.properties</propertyFile>
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
@@ -158,6 +163,11 @@
                     <dependency>
                         <groupId>io.github.shshdxk</groupId>
                         <artifactId>dm-migration</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>io.github.shshdxk</groupId>
+                        <artifactId>hibernate-migration</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                     <dependency>

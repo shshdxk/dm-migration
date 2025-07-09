@@ -1,8 +1,8 @@
 package io.github.shshdxk.hibernate.diff;
 
+import io.github.shshdxk.hibernate.database.HibernateDatabase;
 import io.github.shshdxk.liquibase.change.Change;
 import io.github.shshdxk.liquibase.database.Database;
-import io.github.shshdxk.hibernate.database.HibernateDatabase;
 import io.github.shshdxk.liquibase.diff.output.DiffOutputControl;
 import io.github.shshdxk.liquibase.diff.output.changelog.ChangeGeneratorChain;
 import io.github.shshdxk.liquibase.structure.DatabaseObject;
