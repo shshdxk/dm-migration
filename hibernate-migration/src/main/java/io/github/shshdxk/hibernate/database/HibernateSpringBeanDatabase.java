@@ -1,9 +1,9 @@
 package io.github.shshdxk.hibernate.database;
 
 import io.github.shshdxk.hibernate.database.connection.HibernateConnection;
-import liquibase.Scope;
-import liquibase.database.DatabaseConnection;
-import liquibase.exception.DatabaseException;
+import io.github.shshdxk.liquibase.Scope;
+import io.github.shshdxk.liquibase.database.DatabaseConnection;
+import io.github.shshdxk.liquibase.exception.DatabaseException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.springframework.beans.MutablePropertyValues;

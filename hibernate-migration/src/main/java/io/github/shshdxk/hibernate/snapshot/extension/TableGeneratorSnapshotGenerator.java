@@ -1,9 +1,9 @@
 package io.github.shshdxk.hibernate.snapshot.extension;
 
-import liquibase.structure.core.Column;
-import liquibase.structure.core.DataType;
-import liquibase.structure.core.PrimaryKey;
-import liquibase.structure.core.Table;
+import io.github.shshdxk.liquibase.structure.core.Column;
+import io.github.shshdxk.liquibase.structure.core.DataType;
+import io.github.shshdxk.liquibase.structure.core.PrimaryKey;
+import io.github.shshdxk.liquibase.structure.core.Table;
 import org.hibernate.generator.Generator;
 import org.hibernate.id.enhanced.TableGenerator;
 

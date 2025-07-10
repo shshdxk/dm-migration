@@ -2,10 +2,10 @@ package io.github.shshdxk.hibernate.database;
 
 import io.github.shshdxk.hibernate.database.connection.HibernateConnection;
 import jakarta.persistence.spi.PersistenceUnitInfo;
-import liquibase.Scope;
-import liquibase.database.DatabaseConnection;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.DatabaseException;
+import io.github.shshdxk.liquibase.Scope;
+import io.github.shshdxk.liquibase.database.DatabaseConnection;
+import io.github.shshdxk.liquibase.database.jvm.JdbcConnection;
+import io.github.shshdxk.liquibase.exception.DatabaseException;
 import org.hibernate.bytecode.enhance.spi.EnhancementContext;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.envers.configuration.EnversSettings;

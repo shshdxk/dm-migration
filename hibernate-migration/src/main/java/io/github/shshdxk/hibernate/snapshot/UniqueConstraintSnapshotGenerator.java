@@ -1,16 +1,16 @@
 package io.github.shshdxk.hibernate.snapshot;
 
-import liquibase.Scope;
-import liquibase.exception.DatabaseException;
-import liquibase.snapshot.DatabaseSnapshot;
-import liquibase.snapshot.InvalidExampleException;
-import liquibase.snapshot.SnapshotGenerator;
-import liquibase.structure.DatabaseObject;
-import liquibase.structure.core.Column;
-import liquibase.structure.core.Index;
-import liquibase.structure.core.Table;
-import liquibase.structure.core.UniqueConstraint;
-import liquibase.util.StringUtil;
+import io.github.shshdxk.liquibase.Scope;
+import io.github.shshdxk.liquibase.exception.DatabaseException;
+import io.github.shshdxk.liquibase.snapshot.DatabaseSnapshot;
+import io.github.shshdxk.liquibase.snapshot.InvalidExampleException;
+import io.github.shshdxk.liquibase.snapshot.SnapshotGenerator;
+import io.github.shshdxk.liquibase.structure.DatabaseObject;
+import io.github.shshdxk.liquibase.structure.core.Column;
+import io.github.shshdxk.liquibase.structure.core.Index;
+import io.github.shshdxk.liquibase.structure.core.Table;
+import io.github.shshdxk.liquibase.structure.core.UniqueConstraint;
+import io.github.shshdxk.liquibase.util.StringUtil;
 import org.hibernate.HibernateException;
 
 import java.math.BigInteger;
@@ -115,7 +115,7 @@ public class UniqueConstraintSnapshotGenerator extends HibernateSnapshotGenerato
 
     @Override
     public Class<? extends SnapshotGenerator>[] replaces() {
-        return new Class[]{ liquibase.snapshot.jvm.UniqueConstraintSnapshotGenerator.class };
+        return new Class[]{io.github.shshdxk.liquibase.snapshot.jvm.UniqueConstraintSnapshotGenerator.class};
     }
 
 }

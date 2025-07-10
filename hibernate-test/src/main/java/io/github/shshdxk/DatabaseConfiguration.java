@@ -1,6 +1,6 @@
 package io.github.shshdxk;
 
-import liquibase.integration.spring.SpringLiquibase;
+import io.github.shshdxk.liquibase.integration.spring.SpringLiquibase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +17,7 @@ public class DatabaseConfiguration {
     private SpringLiquibase runLiquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase() {};
         liquibase.setContexts(null);
-        liquibase.setDefaultSchema("TEXT");
+//        liquibase.setDefaultSchema("TEXT");
         liquibase.setDropFirst(false);
         liquibase.setDataSource(dataSource);
         liquibase.setChangeLog("classpath:config/liquibase/master.xml");

@@ -1,21 +1,21 @@
 package io.github.shshdxk.hibernate.snapshot;
 
 import io.github.shshdxk.hibernate.database.HibernateDatabase;
-import liquibase.Scope;
-import liquibase.datatype.DataTypeFactory;
-import liquibase.datatype.core.UnknownType;
-import liquibase.exception.DatabaseException;
-import liquibase.snapshot.DatabaseSnapshot;
-import liquibase.snapshot.InvalidExampleException;
-import liquibase.snapshot.SnapshotGenerator;
-import liquibase.statement.DatabaseFunction;
-import liquibase.structure.DatabaseObject;
-import liquibase.structure.core.Column;
-import liquibase.structure.core.DataType;
-import liquibase.structure.core.Relation;
-import liquibase.structure.core.Table;
-import liquibase.util.SqlUtil;
-import liquibase.util.StringUtil;
+import io.github.shshdxk.liquibase.Scope;
+import io.github.shshdxk.liquibase.datatype.DataTypeFactory;
+import io.github.shshdxk.liquibase.datatype.core.UnknownType;
+import io.github.shshdxk.liquibase.exception.DatabaseException;
+import io.github.shshdxk.liquibase.snapshot.DatabaseSnapshot;
+import io.github.shshdxk.liquibase.snapshot.InvalidExampleException;
+import io.github.shshdxk.liquibase.snapshot.SnapshotGenerator;
+import io.github.shshdxk.liquibase.statement.DatabaseFunction;
+import io.github.shshdxk.liquibase.structure.DatabaseObject;
+import io.github.shshdxk.liquibase.structure.core.Column;
+import io.github.shshdxk.liquibase.structure.core.DataType;
+import io.github.shshdxk.liquibase.structure.core.Relation;
+import io.github.shshdxk.liquibase.structure.core.Table;
+import io.github.shshdxk.liquibase.util.SqlUtil;
+import io.github.shshdxk.liquibase.util.StringUtil;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.MySQLDialect;
@@ -237,7 +237,7 @@ public class ColumnSnapshotGenerator extends HibernateSnapshotGenerator {
 
     @Override
     public Class<? extends SnapshotGenerator>[] replaces() {
-        return new Class[]{liquibase.snapshot.jvm.ColumnSnapshotGenerator.class};
+        return new Class[]{io.github.shshdxk.liquibase.snapshot.jvm.ColumnSnapshotGenerator.class};
     }
 
 }

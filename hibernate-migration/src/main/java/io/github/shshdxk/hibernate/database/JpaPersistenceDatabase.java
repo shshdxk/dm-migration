@@ -2,8 +2,8 @@ package io.github.shshdxk.hibernate.database;
 
 import io.github.shshdxk.hibernate.database.connection.HibernateDriver;
 import jakarta.persistence.spi.PersistenceUnitInfo;
-import liquibase.database.DatabaseConnection;
-import liquibase.exception.DatabaseException;
+import io.github.shshdxk.liquibase.database.DatabaseConnection;
+import io.github.shshdxk.liquibase.exception.DatabaseException;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.Bootstrap;
 import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;

@@ -1,15 +1,15 @@
 package io.github.shshdxk.hibernate.diff;
 
 import io.github.shshdxk.hibernate.database.HibernateDatabase;
-import liquibase.change.Change;
-import liquibase.database.Database;
-import liquibase.diff.Difference;
-import liquibase.diff.ObjectDifferences;
-import liquibase.diff.output.DiffOutputControl;
-import liquibase.statement.DatabaseFunction;
-import liquibase.structure.DatabaseObject;
-import liquibase.structure.core.Column;
-import liquibase.structure.core.DataType;
+import io.github.shshdxk.liquibase.change.Change;
+import io.github.shshdxk.liquibase.database.Database;
+import io.github.shshdxk.liquibase.diff.Difference;
+import io.github.shshdxk.liquibase.diff.ObjectDifferences;
+import io.github.shshdxk.liquibase.diff.output.DiffOutputControl;
+import io.github.shshdxk.liquibase.statement.DatabaseFunction;
+import io.github.shshdxk.liquibase.structure.DatabaseObject;
+import io.github.shshdxk.liquibase.structure.core.Column;
+import io.github.shshdxk.liquibase.structure.core.DataType;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * Hibernate and database types tend to look different even though they are not.
  * The only change that we are handling it size change, and even for this one there are exceptions.
  */
-public class ChangedColumnChangeGenerator extends liquibase.diff.output.changelog.core.ChangedColumnChangeGenerator {
+public class ChangedColumnChangeGenerator extends io.github.shshdxk.liquibase.diff.output.changelog.core.ChangedColumnChangeGenerator {
 
     private static final List<String> TYPES_TO_IGNORE_SIZE = List.of("TIMESTAMP", "TIME");
 

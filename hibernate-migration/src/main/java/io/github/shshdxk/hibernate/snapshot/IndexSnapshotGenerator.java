@@ -1,12 +1,12 @@
 package io.github.shshdxk.hibernate.snapshot;
 
-import liquibase.Scope;
-import liquibase.exception.DatabaseException;
-import liquibase.snapshot.DatabaseSnapshot;
-import liquibase.snapshot.InvalidExampleException;
-import liquibase.snapshot.SnapshotGenerator;
-import liquibase.structure.DatabaseObject;
-import liquibase.structure.core.*;
+import io.github.shshdxk.liquibase.Scope;
+import io.github.shshdxk.liquibase.exception.DatabaseException;
+import io.github.shshdxk.liquibase.snapshot.DatabaseSnapshot;
+import io.github.shshdxk.liquibase.snapshot.InvalidExampleException;
+import io.github.shshdxk.liquibase.snapshot.SnapshotGenerator;
+import io.github.shshdxk.liquibase.structure.DatabaseObject;
+import io.github.shshdxk.liquibase.structure.core.*;
 
 public class IndexSnapshotGenerator extends HibernateSnapshotGenerator {
 
@@ -95,6 +95,6 @@ public class IndexSnapshotGenerator extends HibernateSnapshotGenerator {
 
     @Override
     public Class<? extends SnapshotGenerator>[] replaces() {
-        return new Class[]{liquibase.snapshot.jvm.IndexSnapshotGenerator.class};
+        return new Class[]{io.github.shshdxk.liquibase.snapshot.jvm.IndexSnapshotGenerator.class};
     }
 }

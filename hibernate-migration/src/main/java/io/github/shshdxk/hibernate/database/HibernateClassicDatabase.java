@@ -1,7 +1,7 @@
 package io.github.shshdxk.hibernate.database;
 
-import liquibase.database.DatabaseConnection;
-import liquibase.exception.DatabaseException;
+import io.github.shshdxk.liquibase.database.DatabaseConnection;
+import io.github.shshdxk.liquibase.exception.DatabaseException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;

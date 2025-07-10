@@ -1,11 +1,11 @@
 package io.github.shshdxk.hibernate.database;
 
-import java.lang.reflect.Field;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.HashMap;
-import java.util.Map;
-
+import io.github.shshdxk.liquibase.Scope;
+import io.github.shshdxk.liquibase.database.DatabaseConnection;
+import io.github.shshdxk.liquibase.exception.DatabaseException;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.metamodel.ManagedType;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
@@ -15,12 +15,9 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
 import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
 
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.metamodel.ManagedType;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
-import liquibase.Scope;
-import liquibase.database.DatabaseConnection;
-import liquibase.exception.DatabaseException;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Database implementation for "ejb3" hibernate configurations.
@@ -135,21 +132,17 @@ public class HibernateEjb3Database extends HibernateDatabase {
             final Field declaredField;
 
             declaredField = obj.getClass().getDeclaredField(fieldName);
-            AccessController.doPrivileged(new PrivilegedAction<Object>() {
-                @Override
-                public Object run() {
-                    boolean wasAccessible = declaredField.isAccessible();
-                    try {
-                        declaredField.setAccessible(true);
-                        declaredField.set(obj, value);
-                        return null;
-                    } catch (Exception ex) {
-                        throw new IllegalStateException("Cannot invoke method get", ex);
-                    } finally {
-                        declaredField.setAccessible(wasAccessible);
-                    }
-                }
-            });
+            // 保存字段的原始访问状态
+            boolean canAccess = declaredField.canAccess(obj);
+            try {
+                declaredField.setAccessible(true);
+                declaredField.set(obj, value);
+            } catch (Exception ex) {
+                throw new IllegalStateException("Cannot invoke method get", ex);
+            } finally {
+                // 恢复字段的原始访问状态
+                declaredField.setAccessible(canAccess);
+            }
         }
 
         @Override

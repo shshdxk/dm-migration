@@ -3,7 +3,7 @@ package io.github.shshdxk.hibernate.database;
 import org.hibernate.dialect.DatabaseVersion;
 import org.hibernate.dialect.Dialect;
 
-import liquibase.exception.DatabaseException;
+import io.github.shshdxk.liquibase.exception.DatabaseException;
 
 /**
  * Generic hibernate dialect used when an actual dialect cannot be determined.

@@ -1,20 +1,20 @@
 package io.github.shshdxk.hibernate.diff;
 
 import io.github.shshdxk.hibernate.database.HibernateDatabase;
-import liquibase.change.Change;
-import liquibase.database.Database;
-import liquibase.diff.ObjectDifferences;
-import liquibase.diff.output.DiffOutputControl;
-import liquibase.diff.output.changelog.ChangeGeneratorChain;
-import liquibase.structure.DatabaseObject;
-import liquibase.structure.core.UniqueConstraint;
+import io.github.shshdxk.liquibase.change.Change;
+import io.github.shshdxk.liquibase.database.Database;
+import io.github.shshdxk.liquibase.diff.ObjectDifferences;
+import io.github.shshdxk.liquibase.diff.output.DiffOutputControl;
+import io.github.shshdxk.liquibase.diff.output.changelog.ChangeGeneratorChain;
+import io.github.shshdxk.liquibase.structure.DatabaseObject;
+import io.github.shshdxk.liquibase.structure.core.UniqueConstraint;
 
 /**
  * Unique attribute for unique constraints backing index can have different values dependending on the database implementation,
  * so we suppress all unique constraint changes based on unique constraints.
 
  */
-public class ChangedUniqueConstraintChangeGenerator extends liquibase.diff.output.changelog.core.ChangedUniqueConstraintChangeGenerator {
+public class ChangedUniqueConstraintChangeGenerator extends io.github.shshdxk.liquibase.diff.output.changelog.core.ChangedUniqueConstraintChangeGenerator {
 
     @Override
     public int getPriority(Class<? extends DatabaseObject> objectType, Database database) {

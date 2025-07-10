@@ -1,14 +1,14 @@
 package io.github.shshdxk.hibernate.diff;
 
 import io.github.shshdxk.hibernate.database.HibernateDatabase;
-import liquibase.change.Change;
-import liquibase.database.Database;
-import liquibase.diff.Difference;
-import liquibase.diff.ObjectDifferences;
-import liquibase.diff.output.DiffOutputControl;
-import liquibase.diff.output.changelog.ChangeGeneratorChain;
-import liquibase.structure.DatabaseObject;
-import liquibase.structure.core.Sequence;
+import io.github.shshdxk.liquibase.change.Change;
+import io.github.shshdxk.liquibase.database.Database;
+import io.github.shshdxk.liquibase.diff.Difference;
+import io.github.shshdxk.liquibase.diff.ObjectDifferences;
+import io.github.shshdxk.liquibase.diff.output.DiffOutputControl;
+import io.github.shshdxk.liquibase.diff.output.changelog.ChangeGeneratorChain;
+import io.github.shshdxk.liquibase.structure.DatabaseObject;
+import io.github.shshdxk.liquibase.structure.core.Sequence;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * Hibernate manages sequences only by the name, startValue and incrementBy fields.
  * However, non-hibernate databases might return default values for other fields triggering false positives.
  */
-public class ChangedSequenceChangeGenerator extends liquibase.diff.output.changelog.core.ChangedSequenceChangeGenerator {
+public class ChangedSequenceChangeGenerator extends io.github.shshdxk.liquibase.diff.output.changelog.core.ChangedSequenceChangeGenerator {
 
     private static final Set<String> HIBERNATE_SEQUENCE_FIELDS;
 
