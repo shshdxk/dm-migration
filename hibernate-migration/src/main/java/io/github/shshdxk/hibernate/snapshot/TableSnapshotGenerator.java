@@ -2,20 +2,21 @@ package io.github.shshdxk.hibernate.snapshot;
 
 import io.github.shshdxk.hibernate.database.HibernateDatabase;
 import io.github.shshdxk.hibernate.snapshot.extension.ExtendedSnapshotGenerator;
-import io.github.shshdxk.hibernate.snapshot.extension.MultipleHiLoPerTableSnapshotGenerator;
 import io.github.shshdxk.hibernate.snapshot.extension.TableGeneratorSnapshotGenerator;
-import io.github.shshdxk.liquibase.Scope;
-import io.github.shshdxk.liquibase.exception.DatabaseException;
-import io.github.shshdxk.liquibase.snapshot.DatabaseSnapshot;
-import io.github.shshdxk.liquibase.snapshot.InvalidExampleException;
-import io.github.shshdxk.liquibase.structure.DatabaseObject;
-import io.github.shshdxk.liquibase.structure.core.Schema;
-import io.github.shshdxk.liquibase.structure.core.Table;
+import liquibase.Scope;
+import liquibase.exception.DatabaseException;
+import liquibase.snapshot.DatabaseSnapshot;
+import liquibase.snapshot.InvalidExampleException;
+import liquibase.snapshot.SnapshotGenerator;
+import liquibase.structure.DatabaseObject;
+import liquibase.structure.core.Schema;
+import liquibase.structure.core.Table;
 import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.id.IdentifierGenerator;
+import org.hibernate.generator.Generator;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SimpleValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,11 +25,10 @@ import java.util.List;
 
 public class TableSnapshotGenerator extends HibernateSnapshotGenerator {
 
-    private List<ExtendedSnapshotGenerator<IdentifierGenerator, Table>> tableIdGenerators = new ArrayList<ExtendedSnapshotGenerator<IdentifierGenerator, Table>>();
+    private List<ExtendedSnapshotGenerator<Generator, Table>> tableIdGenerators = new ArrayList<>();
 
     public TableSnapshotGenerator() {
         super(Table.class, new Class[]{Schema.class});
-        tableIdGenerators.add(new MultipleHiLoPerTableSnapshotGenerator());
         tableIdGenerators.add(new TableGeneratorSnapshotGenerator());
     }
 
@@ -74,9 +74,10 @@ public class TableSnapshotGenerator extends HibernateSnapshotGenerator {
                 if (hibernateTable.isPhysicalTable()) {
                     addDatabaseObjectToSchema(hibernateTable, schema, snapshot);
 
-                    Iterator<?> joins = pc.getJoinIterator();
-                    while (joins.hasNext()) {
-                        Join join = (Join) joins.next();
+                    Collection<Join> joins = pc.getJoins();
+                    Iterator<Join> joinMappings = joins.iterator();
+                    while (joinMappings.hasNext()) {
+                        Join join = joinMappings.next();
                         addDatabaseObjectToSchema(join.getTable(), schema, snapshot);
                     }
                 }
@@ -84,15 +85,15 @@ public class TableSnapshotGenerator extends HibernateSnapshotGenerator {
 
             Iterator<PersistentClass> classMappings = entityBindings.iterator();
             while (classMappings.hasNext()) {
-                PersistentClass persistentClass = (PersistentClass) classMappings
-                        .next();
-                if (!persistentClass.isInherited()) {
-                    IdentifierGenerator ig = persistentClass.getIdentifier().createIdentifierGenerator(
-                            metadata.getIdentifierGeneratorFactory(),
+                PersistentClass persistentClass = classMappings.next();
+                if (!persistentClass.isInherited() && persistentClass.getIdentifier() instanceof SimpleValue) {
+                    var simpleValue =  (SimpleValue) persistentClass.getIdentifier();
+                    Generator ig = simpleValue.createGenerator(
+                            metadata.getMetadataBuildingOptions().getIdentifierGeneratorFactory(),
                             database.getDialect(),
                             (RootClass) persistentClass
                     );
-                    for (ExtendedSnapshotGenerator<IdentifierGenerator, Table> tableIdGenerator : tableIdGenerators) {
+                    for (ExtendedSnapshotGenerator<Generator, Table> tableIdGenerator : tableIdGenerators) {
                         if (tableIdGenerator.supports(ig)) {
                             Table idTable = tableIdGenerator.snapshot(ig);
                             idTable.setSchema(schema);
@@ -120,5 +121,10 @@ public class TableSnapshotGenerator extends HibernateSnapshotGenerator {
         joinTable.setSchema(schema);
         Scope.getCurrentScope().getLog(getClass()).info("Found table " + joinTable.getName());
         schema.addDatabaseObject(snapshotObject(joinTable, snapshot));
+    }
+
+    @Override
+    public Class<? extends SnapshotGenerator>[] replaces() {
+        return new Class[]{liquibase.snapshot.jvm.TableSnapshotGenerator.class};
     }
 }

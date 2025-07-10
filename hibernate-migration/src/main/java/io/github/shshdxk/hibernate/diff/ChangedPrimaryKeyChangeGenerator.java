@@ -7,17 +7,17 @@ import liquibase.diff.ObjectDifferences;
 import liquibase.diff.output.DiffOutputControl;
 import liquibase.diff.output.changelog.ChangeGeneratorChain;
 import liquibase.structure.DatabaseObject;
-import liquibase.structure.core.ForeignKey;
+import liquibase.structure.core.PrimaryKey;
 
 /**
- * Hibernate doesn't know about all the variations that occur with foreign keys but just whether the FK exists or not.
- * To prevent changing customized foreign keys, we suppress all foreign key changes from hibernate.
+ * Hibernate doesn't know about all the variations that occur with primary keys, especially backing index stuff.
+ * To prevent changing customized primary keys, we suppress this kind of changes from hibernate side.
  */
-public class ChangedForeignKeyChangeGenerator extends liquibase.diff.output.changelog.core.ChangedForeignKeyChangeGenerator {
+public class ChangedPrimaryKeyChangeGenerator extends liquibase.diff.output.changelog.core.ChangedPrimaryKeyChangeGenerator {
 
     @Override
     public int getPriority(Class<? extends DatabaseObject> objectType, Database database) {
-        if (ForeignKey.class.isAssignableFrom(objectType)) {
+        if (PrimaryKey.class.isAssignableFrom(objectType)) {
             return PRIORITY_ADDITIONAL;
         }
         return PRIORITY_NONE;
@@ -26,8 +26,7 @@ public class ChangedForeignKeyChangeGenerator extends liquibase.diff.output.chan
     @Override
     public Change[] fixChanged(DatabaseObject changedObject, ObjectDifferences differences, DiffOutputControl control, Database referenceDatabase, Database comparisonDatabase, ChangeGeneratorChain chain) {
         if (referenceDatabase instanceof HibernateDatabase || comparisonDatabase instanceof HibernateDatabase) {
-            differences.removeDifference("deleteRule");
-            differences.removeDifference("updateRule");
+            differences.removeDifference("unique");
             differences.removeDifference("validate");
             if (!differences.hasDifferences()) {
                 return null;

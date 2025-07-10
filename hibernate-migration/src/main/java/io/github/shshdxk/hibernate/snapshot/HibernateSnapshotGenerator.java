@@ -1,13 +1,13 @@
 package io.github.shshdxk.hibernate.snapshot;
 
 import io.github.shshdxk.hibernate.database.HibernateDatabase;
-import io.github.shshdxk.liquibase.database.Database;
-import io.github.shshdxk.liquibase.exception.DatabaseException;
-import io.github.shshdxk.liquibase.snapshot.DatabaseSnapshot;
-import io.github.shshdxk.liquibase.snapshot.InvalidExampleException;
-import io.github.shshdxk.liquibase.snapshot.SnapshotGenerator;
-import io.github.shshdxk.liquibase.snapshot.SnapshotGeneratorChain;
-import io.github.shshdxk.liquibase.structure.DatabaseObject;
+import liquibase.database.Database;
+import liquibase.exception.DatabaseException;
+import liquibase.snapshot.DatabaseSnapshot;
+import liquibase.snapshot.InvalidExampleException;
+import liquibase.snapshot.SnapshotGenerator;
+import liquibase.snapshot.SnapshotGeneratorChain;
+import liquibase.structure.DatabaseObject;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.mapping.Table;
 

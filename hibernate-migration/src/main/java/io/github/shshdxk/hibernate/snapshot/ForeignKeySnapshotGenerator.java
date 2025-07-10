@@ -1,17 +1,17 @@
 package io.github.shshdxk.hibernate.snapshot;
 
 import io.github.shshdxk.hibernate.database.HibernateDatabase;
-import io.github.shshdxk.liquibase.diff.compare.DatabaseObjectComparatorFactory;
-import io.github.shshdxk.liquibase.exception.DatabaseException;
-import io.github.shshdxk.liquibase.snapshot.DatabaseSnapshot;
-import io.github.shshdxk.liquibase.snapshot.InvalidExampleException;
-import io.github.shshdxk.liquibase.structure.DatabaseObject;
-import io.github.shshdxk.liquibase.structure.core.ForeignKey;
-import io.github.shshdxk.liquibase.structure.core.Table;
+import liquibase.diff.compare.DatabaseObjectComparatorFactory;
+import liquibase.exception.DatabaseException;
+import liquibase.snapshot.DatabaseSnapshot;
+import liquibase.snapshot.InvalidExampleException;
+import liquibase.snapshot.SnapshotGenerator;
+import liquibase.structure.DatabaseObject;
+import liquibase.structure.core.ForeignKey;
+import liquibase.structure.core.Table;
 import org.hibernate.boot.spi.MetadataImplementor;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 public class ForeignKeySnapshotGenerator extends HibernateSnapshotGenerator {
 
@@ -35,12 +35,8 @@ public class ForeignKeySnapshotGenerator extends HibernateSnapshotGenerator {
             MetadataImplementor metadata = (MetadataImplementor) database.getMetadata();
 
             Collection<org.hibernate.mapping.Table> tmapp = metadata.collectTableMappings();
-            Iterator<org.hibernate.mapping.Table> tableMappings = tmapp.iterator();
-            while (tableMappings.hasNext()) {
-                org.hibernate.mapping.Table hibernateTable = (org.hibernate.mapping.Table) tableMappings.next();
-                Iterator fkIterator = hibernateTable.getForeignKeyIterator();
-                while (fkIterator.hasNext()) {
-                    org.hibernate.mapping.ForeignKey hibernateForeignKey = (org.hibernate.mapping.ForeignKey) fkIterator.next();
+            for (org.hibernate.mapping.Table hibernateTable : tmapp) {
+                for (org.hibernate.mapping.ForeignKey hibernateForeignKey : hibernateTable.getForeignKeys().values()) {
                     Table currentTable = new Table().setName(hibernateTable.getName());
                     currentTable.setSchema(hibernateTable.getCatalog(), hibernateTable.getSchema());
 
@@ -54,14 +50,14 @@ public class ForeignKeySnapshotGenerator extends HibernateSnapshotGenerator {
                         fk.setPrimaryKeyTable(referencedTable);
                         fk.setForeignKeyTable(currentTable);
                         for (Object column : hibernateForeignKey.getColumns()) {
-                            fk.addForeignKeyColumn(new io.github.shshdxk.liquibase.structure.core.Column(((org.hibernate.mapping.Column) column).getName()));
+                            fk.addForeignKeyColumn(new liquibase.structure.core.Column(((org.hibernate.mapping.Column) column).getName()));
                         }
                         for (Object column : hibernateForeignKey.getReferencedColumns()) {
-                            fk.addPrimaryKeyColumn(new io.github.shshdxk.liquibase.structure.core.Column(((org.hibernate.mapping.Column) column).getName()));
+                            fk.addPrimaryKeyColumn(new liquibase.structure.core.Column(((org.hibernate.mapping.Column) column).getName()));
                         }
                         if (fk.getPrimaryKeyColumns() == null || fk.getPrimaryKeyColumns().isEmpty()) {
                             for (Object column : hibernateReferencedTable.getPrimaryKey().getColumns()) {
-                                fk.addPrimaryKeyColumn(new io.github.shshdxk.liquibase.structure.core.Column(((org.hibernate.mapping.Column) column).getName()));
+                                fk.addPrimaryKeyColumn(new liquibase.structure.core.Column(((org.hibernate.mapping.Column) column).getName()));
                             }
                         }
 
@@ -83,6 +79,11 @@ public class ForeignKeySnapshotGenerator extends HibernateSnapshotGenerator {
                 }
             }
         }
+    }
+
+    @Override
+    public Class<? extends SnapshotGenerator>[] replaces() {
+        return new Class[]{ liquibase.snapshot.jvm.ForeignKeySnapshotGenerator.class };
     }
 
 }

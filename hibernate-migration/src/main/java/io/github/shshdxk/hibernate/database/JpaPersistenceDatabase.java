@@ -1,15 +1,14 @@
 package io.github.shshdxk.hibernate.database;
 
-
 import io.github.shshdxk.hibernate.database.connection.HibernateDriver;
-import io.github.shshdxk.liquibase.database.DatabaseConnection;
-import io.github.shshdxk.liquibase.exception.DatabaseException;
+import jakarta.persistence.spi.PersistenceUnitInfo;
+import liquibase.database.DatabaseConnection;
+import liquibase.exception.DatabaseException;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.Bootstrap;
 import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
 
-import javax.persistence.spi.PersistenceUnitInfo;
-import java.util.Collections;
+import java.util.Map;
 
 /**
  * Database implementation for JPA configurations.
@@ -50,7 +49,8 @@ public class JpaPersistenceDatabase extends HibernateEjb3Database {
         internalPersistenceUnitManager.preparePersistenceUnitInfos();
         PersistenceUnitInfo persistenceUnitInfo = internalPersistenceUnitManager.obtainDefaultPersistenceUnitInfo();
 
-        EntityManagerFactoryBuilderImpl builder = (EntityManagerFactoryBuilderImpl) Bootstrap.getEntityManagerFactoryBuilder(persistenceUnitInfo, Collections.emptyMap());
+        EntityManagerFactoryBuilderImpl builder = (EntityManagerFactoryBuilderImpl) Bootstrap.getEntityManagerFactoryBuilder(persistenceUnitInfo, Map.of(
+                HibernateDatabase.HIBERNATE_TEMP_USE_JDBC_METADATA_DEFAULTS, Boolean.FALSE.toString()));
         return builder;
     }
 

@@ -1,8 +1,11 @@
 package io.github.shshdxk.hibernate.database;
 
-import io.github.shshdxk.liquibase.Scope;
-import io.github.shshdxk.liquibase.database.DatabaseConnection;
-import io.github.shshdxk.liquibase.exception.DatabaseException;
+import java.lang.reflect.Field;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
@@ -12,14 +15,12 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
 import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.metamodel.ManagedType;
-import javax.persistence.spi.PersistenceUnitTransactionType;
-import java.lang.reflect.Field;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.HashMap;
-import java.util.Map;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.metamodel.ManagedType;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
+import liquibase.Scope;
+import liquibase.database.DatabaseConnection;
+import liquibase.exception.DatabaseException;
 
 /**
  * Database implementation for "ejb3" hibernate configurations.
@@ -68,7 +69,7 @@ public class HibernateEjb3Database extends HibernateDatabase {
             Scope.getCurrentScope().getLog(getClass()).info("Could not determine hibernate dialect, using HibernateGenericDialect");
             dialect = new HibernateGenericDialect();
         }
-        checkOperation();
+
         return metadata;
     }
 
@@ -76,6 +77,7 @@ public class HibernateEjb3Database extends HibernateDatabase {
         MyHibernatePersistenceProvider persistenceProvider = new MyHibernatePersistenceProvider();
 
         Map<String, Object> properties = new HashMap<>();
+        properties.put(HibernateDatabase.HIBERNATE_TEMP_USE_JDBC_METADATA_DEFAULTS, Boolean.FALSE.toString());
         properties.put(AvailableSettings.USE_SECOND_LEVEL_CACHE, Boolean.FALSE.toString());
         properties.put(AvailableSettings.USE_NATIONALIZED_CHARACTER_DATA, getProperty(AvailableSettings.USE_NATIONALIZED_CHARACTER_DATA));
 

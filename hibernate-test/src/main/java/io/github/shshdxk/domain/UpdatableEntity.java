@@ -1,14 +1,11 @@
 package io.github.shshdxk.domain;
 
+import jakarta.persistence.Column;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
-@MappedSuperclass
 public abstract class UpdatableEntity extends AbstractEntity {
 
     @CreatedDate

@@ -1,7 +1,7 @@
 package io.github.shshdxk.hibernate.database.connection;
 
-import io.github.shshdxk.liquibase.database.LiquibaseExtDriver;
-import io.github.shshdxk.liquibase.resource.ResourceAccessor;
+import liquibase.database.LiquibaseExtDriver;
+import liquibase.resource.ResourceAccessor;
 
 import java.sql.*;
 import java.util.Properties;

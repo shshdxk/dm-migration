@@ -1,6 +1,6 @@
 package io.github.shshdxk;
 
-import io.github.shshdxk.liquibase.integration.spring.SpringLiquibase;
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

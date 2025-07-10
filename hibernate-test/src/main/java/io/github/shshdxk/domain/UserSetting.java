@@ -1,9 +1,9 @@
 package io.github.shshdxk.domain;
 
 import io.github.shshdxk.enums.UserSettingKey;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 
-import javax.persistence.*;
 
 @Entity
 @Table(name = UserSetting.TABLE_NAME,
@@ -12,7 +12,7 @@ import javax.persistence.*;
             @UniqueConstraint(name = "U_USER_SETTINGS_USE_ID", columnNames = { "user_id" })
     }
 )
-@org.hibernate.annotations.Table(appliesTo = UserSetting.TABLE_NAME, comment = "用户设置表")
+@Comment("用户设置表")
 public class UserSetting extends UpdatableEntity {
 
     public static final String TABLE_NAME = "ih_user_settings";

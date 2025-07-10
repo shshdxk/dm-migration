@@ -1,7 +1,7 @@
 package io.github.shshdxk.hibernate.database;
 
-import io.github.shshdxk.liquibase.database.DatabaseConnection;
-import io.github.shshdxk.liquibase.exception.DatabaseException;
+import liquibase.database.DatabaseConnection;
+import liquibase.exception.DatabaseException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
@@ -35,7 +35,7 @@ public class HibernateClassicDatabase extends HibernateDatabase {
     protected Metadata buildMetadataFromPath() throws DatabaseException {
         this.configuration = new Configuration();
         this.configuration.configure(getHibernateConnection().getPath());
-        checkOperation();
+
         return super.buildMetadataFromPath();
     }
 
@@ -44,13 +44,13 @@ public class HibernateClassicDatabase extends HibernateDatabase {
         Configuration config = new Configuration(sources);
         config.configure(getHibernateConnection().getPath());
 
-        config.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false");
+        config.setProperty(HibernateDatabase.HIBERNATE_TEMP_USE_JDBC_METADATA_DEFAULTS, Boolean.FALSE.toString());
         config.setProperty("hibernate.cache.use_second_level_cache", "false");
 
         ServiceRegistry standardRegistry = configuration.getStandardServiceRegistryBuilder()
                 .applySettings(config.getProperties())
                 .addService(ConnectionProvider.class, new NoOpConnectionProvider())
-                .addService(MultiTenantConnectionProvider.class, new NoOpConnectionProvider())
+                .addService(MultiTenantConnectionProvider.class, new NoOpMultiTenantConnectionProvider())
                 .build();
 
         config.buildSessionFactory(standardRegistry);

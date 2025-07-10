@@ -1,8 +1,8 @@
 package io.github.shshdxk.domain;
 
+import jakarta.persistence.AttributeConverter;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.AttributeConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

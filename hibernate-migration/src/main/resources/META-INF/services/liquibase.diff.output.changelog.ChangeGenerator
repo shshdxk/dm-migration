@@ -1,5 +1,7 @@
 io.github.shshdxk.hibernate.diff.ChangedColumnChangeGenerator
 io.github.shshdxk.hibernate.diff.ChangedForeignKeyChangeGenerator
+io.github.shshdxk.hibernate.diff.ChangedPrimaryKeyChangeGenerator
 io.github.shshdxk.hibernate.diff.ChangedSequenceChangeGenerator
+io.github.shshdxk.hibernate.diff.ChangedUniqueConstraintChangeGenerator
 io.github.shshdxk.hibernate.diff.MissingSequenceChangeGenerator
 io.github.shshdxk.hibernate.diff.UnexpectedIndexChangeGenerator

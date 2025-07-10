@@ -1,11 +1,11 @@
 package io.github.shshdxk.domain;
 
 import io.github.shshdxk.enums.Gender;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.Type;
+import jakarta.persistence.*;
+import jakarta.persistence.Table;
+import org.hibernate.annotations.*;
+import org.hibernate.type.SqlTypes;
 
-import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = User.TABLE_NAME, uniqueConstraints = {
         @UniqueConstraint(name = "U_USERS_USERNAME", columnNames = {"username"}),
         @UniqueConstraint(name = "U_USERS_MOBILE", columnNames = {"mobile"})})
-@org.hibernate.annotations.Table(appliesTo = User.TABLE_NAME, comment = "用户表")
+@Comment("用户表")
 public class User extends UpdatableEntity {
 
     public static final String TABLE_NAME = "ih_users";
@@ -30,7 +30,7 @@ public class User extends UpdatableEntity {
 
     @Comment("全称")
     @Column(name = "full_name", nullable = false)
-    @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(SqlTypes.CLOB)
     private String fullName;
 
     @Comment(" 密码")
@@ -47,23 +47,26 @@ public class User extends UpdatableEntity {
     private Gender gender = Gender.UNKNOWN;
 
     @Comment("头像URL")
-    @Column(name = "avatar_url", length = Integer.MAX_VALUE)
+    @Column(name = "avatar_url")
     @Convert(converter = StringListConvert.class)
+    @JdbcTypeCode(SqlTypes.CLOB)
     private List<String> avatarUrl;
 
     @Comment("头像URL1")
     @Column(name = "avatar_url1")
-    @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(SqlTypes.CLOB)
     private String avatarUrl1;
 
     @Comment("头像URL2")
     @Column(name = "avatar_url2")
     @Convert(converter = StringListConvert.class)
+    @JdbcTypeCode(SqlTypes.CLOB)
     private String avatarUrl2;
 
     @Comment("头像URL3")
-    @Column(name = "avatar_url3", length = Integer.MAX_VALUE)
+    @Column(name = "avatar_url3")
     @Convert(converter = StringListConvert.class)
+    @JdbcTypeCode(SqlTypes.CLOB)
     private String avatarUrl3;
 
     @Comment("是否删除")

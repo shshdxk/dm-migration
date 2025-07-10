@@ -1,7 +1,6 @@
 package io.github.shshdxk.hibernate.database.connection;
 
-
-import io.github.shshdxk.liquibase.resource.ResourceAccessor;
+import liquibase.resource.ResourceAccessor;
 
 import java.io.IOException;
 import java.io.StringReader;

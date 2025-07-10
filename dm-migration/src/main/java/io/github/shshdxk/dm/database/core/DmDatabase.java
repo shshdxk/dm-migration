@@ -1,25 +1,25 @@
 package io.github.shshdxk.dm.database.core;
 
-import io.github.shshdxk.liquibase.CatalogAndSchema;
-import io.github.shshdxk.liquibase.GlobalConfiguration;
-import io.github.shshdxk.liquibase.Scope;
-import io.github.shshdxk.liquibase.database.AbstractJdbcDatabase;
-import io.github.shshdxk.liquibase.database.DatabaseConnection;
-import io.github.shshdxk.liquibase.database.OfflineConnection;
-import io.github.shshdxk.liquibase.database.jvm.JdbcConnection;
-import io.github.shshdxk.liquibase.exception.DatabaseException;
-import io.github.shshdxk.liquibase.exception.ValidationErrors;
-import io.github.shshdxk.liquibase.executor.ExecutorService;
-import io.github.shshdxk.liquibase.statement.DatabaseFunction;
-import io.github.shshdxk.liquibase.statement.SequenceCurrentValueFunction;
-import io.github.shshdxk.liquibase.statement.SequenceNextValueFunction;
-import io.github.shshdxk.liquibase.statement.core.RawCallStatement;
-import io.github.shshdxk.liquibase.statement.core.RawParameterizedSqlStatement;
-import io.github.shshdxk.liquibase.structure.DatabaseObject;
-import io.github.shshdxk.liquibase.structure.core.Column;
-import io.github.shshdxk.liquibase.structure.core.Schema;
-import io.github.shshdxk.liquibase.util.JdbcUtil;
-import io.github.shshdxk.liquibase.util.StringUtil;
+import liquibase.CatalogAndSchema;
+import liquibase.GlobalConfiguration;
+import liquibase.Scope;
+import liquibase.database.AbstractJdbcDatabase;
+import liquibase.database.DatabaseConnection;
+import liquibase.database.OfflineConnection;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.DatabaseException;
+import liquibase.exception.ValidationErrors;
+import liquibase.executor.ExecutorService;
+import liquibase.statement.DatabaseFunction;
+import liquibase.statement.SequenceCurrentValueFunction;
+import liquibase.statement.SequenceNextValueFunction;
+import liquibase.statement.core.RawCallStatement;
+import liquibase.statement.core.RawParameterizedSqlStatement;
+import liquibase.structure.DatabaseObject;
+import liquibase.structure.core.Column;
+import liquibase.structure.core.Schema;
+import liquibase.util.JdbcUtil;
+import liquibase.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.ResultSet;
@@ -664,16 +664,6 @@ public class DmDatabase extends AbstractJdbcDatabase {
             }
         }
         return sql;
-    }
-
-    @Override
-    public boolean supportsTableRemarks() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsColumnRemarks() {
-        return true;
     }
 
 }
