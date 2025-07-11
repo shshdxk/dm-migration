@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>hibernate-migration</artifactId>
+    <name>hibernate-migration</name>
+    <description>Hibernate Migration</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

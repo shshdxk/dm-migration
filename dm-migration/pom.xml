@@ -9,6 +9,8 @@
         <version>4.33.0</version>
     </parent>
     <artifactId>dm-migration</artifactId>
+    <name>dm-migration</name>
+    <description>dm-migration</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
