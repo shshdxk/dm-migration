@@ -676,4 +676,13 @@ public class DmDatabase extends AbstractJdbcDatabase {
         return true;
     }
 
+    @Override
+    public String getModifyString() {
+        return "MODIFY";
+    }
+
+    @Override
+    public String getPreDataTypeString() {
+        return " ";
+    }
 }
