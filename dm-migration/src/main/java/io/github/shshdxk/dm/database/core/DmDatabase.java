@@ -22,6 +22,7 @@ import io.github.shshdxk.liquibase.util.JdbcUtil;
 import io.github.shshdxk.liquibase.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -684,5 +685,20 @@ public class DmDatabase extends AbstractJdbcDatabase {
     @Override
     public String getPreDataTypeString() {
         return " ";
+    }
+
+    @Override
+    public ResultSet getTablesResultSet(DatabaseMetaData metaData, String catalog, String schema, String table) throws SQLException {
+        return metaData.getTables(catalog, schema, ((table == null) ? "%" : table), new String[]{"TABLE"});
+    }
+
+    @Override
+    public ResultSet getViewsResultSet(DatabaseMetaData metaData, String catalog, String schema, String view) throws SQLException {
+        return metaData.getTables(catalog, schema, ((view == null) ? "%" : view), new String[]{"VIEW"});
+    }
+
+    @Override
+    public ResultSet getColumnsResultSet(DatabaseMetaData metaData, String catalog, String schema, String table, String column) throws SQLException {
+        return metaData.getColumns(catalog, schema, table, column);
     }
 }
