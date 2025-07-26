@@ -666,4 +666,21 @@ public class DmDatabase extends AbstractJdbcDatabase {
         return sql;
     }
 
+    @Override
+    public String escapeForLike(String string) {
+        if (string == null) {
+            return null;
+        }
+        return string.replace("%", "\\%");
+    }
+
+    @Override
+    public String getModifyString() {
+        return "MODIFY";
+    }
+
+    @Override
+    public String getPreDataTypeString() {
+        return " ";
+    }
 }
