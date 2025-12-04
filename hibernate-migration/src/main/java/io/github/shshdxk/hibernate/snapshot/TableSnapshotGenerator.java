@@ -15,8 +15,6 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.generator.Generator;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SimpleValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -79,27 +77,6 @@ public class TableSnapshotGenerator extends HibernateSnapshotGenerator {
                     while (joinMappings.hasNext()) {
                         Join join = joinMappings.next();
                         addDatabaseObjectToSchema(join.getTable(), schema, snapshot);
-                    }
-                }
-            }
-
-            Iterator<PersistentClass> classMappings = entityBindings.iterator();
-            while (classMappings.hasNext()) {
-                PersistentClass persistentClass = classMappings.next();
-                if (!persistentClass.isInherited() && persistentClass.getIdentifier() instanceof SimpleValue) {
-                    var simpleValue =  (SimpleValue) persistentClass.getIdentifier();
-                    Generator ig = simpleValue.createGenerator(
-                            metadata.getMetadataBuildingOptions().getIdentifierGeneratorFactory(),
-                            database.getDialect(),
-                            (RootClass) persistentClass
-                    );
-                    for (ExtendedSnapshotGenerator<Generator, Table> tableIdGenerator : tableIdGenerators) {
-                        if (tableIdGenerator.supports(ig)) {
-                            Table idTable = tableIdGenerator.snapshot(ig);
-                            idTable.setSchema(schema);
-                            schema.addDatabaseObject(snapshotObject(idTable, snapshot));
-                            break;
-                        }
                     }
                 }
             }

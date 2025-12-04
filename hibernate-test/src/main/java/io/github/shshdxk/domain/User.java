@@ -12,66 +12,54 @@ import java.util.List;
  *
  */
 @Entity
-@Table(name = User.TABLE_NAME, uniqueConstraints = {
+@Table(name = User.TABLE_NAME, comment = "用户表", uniqueConstraints = {
         @UniqueConstraint(name = "U_USERS_USERNAME", columnNames = {"username"}),
         @UniqueConstraint(name = "U_USERS_MOBILE", columnNames = {"mobile"})})
-@Comment("用户表")
 public class User extends UpdatableEntity {
 
     public static final String TABLE_NAME = "ih_users";
-    @Comment("名称")
-    @Column(name = "username", nullable = false, length = 32)
+    @Column(name = "username", nullable = false, length = 32, comment = "用户名")
     private String username;
 
-    @Comment("联系方式")
-    @Column(name = "mobile")
+    @Column(name = "mobile", comment = "联系方式")
     @ColumnDefault("-1")
     private String mobile;
 
-    @Comment("全称")
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name", nullable = false, comment = "全称")
     @JdbcTypeCode(SqlTypes.CLOB)
     private String fullName;
 
-    @Comment(" 密码")
-    @Column(name = "password_hash")
+    @Column(name = "password_hash", comment = "密码")
     private String password;
 
-    @Comment("是否被锁定")
-    @Column(name = "is_locked", nullable = false)
+    @Column(name = "is_locked", nullable = false, comment = "是否被锁定")
     @ColumnDefault("true")
     private boolean locked = false;
 
-    @Comment("性别")
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender", nullable = false, comment = "性别")
     private Gender gender = Gender.UNKNOWN;
 
-    @Comment("头像URL")
-    @Column(name = "avatar_url")
+    @Column(name = "avatar_url", length = Integer.MAX_VALUE, comment = "头像URL")
     @Convert(converter = StringListConvert.class)
-    @JdbcTypeCode(SqlTypes.CLOB)
+    @JdbcTypeCode(SqlTypes.NCLOB)
     private List<String> avatarUrl;
 
-    @Comment("头像URL1")
-    @Column(name = "avatar_url1")
+    @Column(name = "avatar_url1", comment = "头像URL1")
     @JdbcTypeCode(SqlTypes.CLOB)
     private String avatarUrl1;
 
-    @Comment("头像URL2")
-    @Column(name = "avatar_url2")
+    @Column(name = "avatar_url2", length = Integer.MAX_VALUE, comment = "头像URL2")
     @Convert(converter = StringListConvert.class)
     @JdbcTypeCode(SqlTypes.CLOB)
     private String avatarUrl2;
 
-    @Comment("头像URL3")
-    @Column(name = "avatar_url3")
+    @Column(name = "avatar_url3", comment = "头像URL3")
     @Convert(converter = StringListConvert.class)
-    @JdbcTypeCode(SqlTypes.CLOB)
+    @JdbcTypeCode(SqlTypes.NCLOB)
     private String avatarUrl3;
 
-    @Comment("是否删除")
-    @Column(name = "is_deleted")
-    @ColumnDefault("0")
+    @Column(name = "is_deleted", comment = "是否删除")
+    @ColumnDefault("false")
     private boolean deleted = false;
 
     public String getUsername() {

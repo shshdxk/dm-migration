@@ -3,11 +3,18 @@ server:
 
 spring:
   datasource:
-    url: jdbc:dm://192.168.23.137:5236/TEXT
-    username: SYSDBA
-    password: SYSdba001
-    dialect: org.hibernate.dialect.DmDialect
-    driverclassname: dm.jdbc.driver.DmDriver
+    url: jdbc:postgresql://127.0.0.1:5432/testdb
+    username: postgres
+    password: 123456
+    driverclassname: org.postgresql.Driver
+
+#spring:
+#  datasource:
+#    url: jdbc:dm://192.168.23.137:5236/TEXT
+#    username: SYSDBA
+#    password: SYSdba001
+#    dialect: org.hibernate.dialect.DmDialect
+#    driverclassname: dm.jdbc.driver.DmDriver
 
 #spring:
 #  datasource:

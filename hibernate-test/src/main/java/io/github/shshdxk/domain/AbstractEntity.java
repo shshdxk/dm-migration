@@ -1,9 +1,6 @@
 package io.github.shshdxk.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.data.domain.Persistable;
@@ -19,6 +16,14 @@ public abstract class AbstractEntity implements Persistable<Long>, Serializable 
     @Id
     @Column(name = "id", nullable = false, updatable = false)
     @Sequence(name = "idGenerator")
+//    @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_id_seq_gen")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq_gen")
+//    @SequenceGenerator(
+//            name = "user_id_seq_gen",
+//            sequenceName = "user_id_seq",
+//            allocationSize = 22,
+//            initialValue = 3
+//    )
     @Comment("主键")
     private Long id;
 

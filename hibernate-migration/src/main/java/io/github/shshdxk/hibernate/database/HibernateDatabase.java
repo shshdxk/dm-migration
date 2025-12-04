@@ -6,7 +6,6 @@ import io.github.shshdxk.hibernate.database.connection.HibernateDriver;
 import io.github.shshdxk.liquibase.Scope;
 import io.github.shshdxk.liquibase.database.AbstractJdbcDatabase;
 import io.github.shshdxk.liquibase.database.DatabaseConnection;
-import io.github.shshdxk.liquibase.database.jvm.JdbcConnection;
 import io.github.shshdxk.liquibase.exception.DatabaseException;
 import io.github.shshdxk.liquibase.exception.UnexpectedLiquibaseException;
 import org.hibernate.boot.Metadata;
@@ -104,7 +103,7 @@ public abstract class HibernateDatabase extends AbstractJdbcDatabase {
      * Convenience method to return the underlying HibernateConnection in the JdbcConnection returned by {@link #getConnection()}
      */
     protected HibernateConnection getHibernateConnection() {
-        return ((HibernateConnection) ((JdbcConnection) getConnection()).getUnderlyingConnection());
+        return ((HibernateConnection) getConnection().getUnderlyingConnection());
     }
 
     /**

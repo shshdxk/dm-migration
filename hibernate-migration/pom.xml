@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.shshdxk</groupId>
         <artifactId>dm-migration-parent</artifactId>
-        <version>4.34.0</version>
+        <version>4.34.1</version>
     </parent>
 
     <artifactId>hibernate-migration</artifactId>
@@ -44,6 +44,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.models</groupId>
+            <artifactId>hibernate-models</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
