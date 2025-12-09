@@ -30,6 +30,17 @@ public class UserB implements Persistable<Long>, Serializable {
     @Column(name = "username", nullable = false, length = 32, comment = "用户名")
     private String username;
 
+    @ManyToOne
+    @JoinColumn(name = "user_c_id")
+    private UserC userC;
+
+    public UserC getUserC() {
+        return userC;
+    }
+
+    public void setUserC(UserC userC) {
+        this.userC = userC;
+    }
 
     public String getUsername() {
         return username;
@@ -52,4 +63,5 @@ public class UserB implements Persistable<Long>, Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
 }
