@@ -220,9 +220,11 @@ public class ColumnSnapshotGenerator extends HibernateSnapshotGenerator {
                                         }
                                     }
                                 }
-                            } catch (IllegalAccessException ignored) {
+                            } catch (IllegalAccessException e) {
+                                Scope.getCurrentScope().getLog(ColumnSnapshotGenerator.class).info(e.getLocalizedMessage(), e);
+                            } finally {
+                                field.setAccessible(canAccess);
                             }
-                            field.setAccessible(canAccess);
                         }
 
                         if (sequenceGeneratorJpaAnnotation == null) {
