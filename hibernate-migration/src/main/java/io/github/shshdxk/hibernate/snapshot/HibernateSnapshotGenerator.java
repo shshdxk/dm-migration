@@ -98,16 +98,4 @@ public abstract class HibernateSnapshotGenerator implements SnapshotGenerator {
         return null;
     }
 
-    protected PersistentClass findHibernateRootClass(DatabaseObject example, DatabaseSnapshot snapshot) throws DatabaseException {
-        HibernateDatabase database = (HibernateDatabase) snapshot.getDatabase();
-        MetadataImplementor metadata = (MetadataImplementor) database.getMetadata();
-        Collection<PersistentClass> entityBindings = metadata.getEntityBindings();
-        for (PersistentClass persistentClass : entityBindings) {
-            if (!persistentClass.isInherited() && persistentClass.getTable().getName().equalsIgnoreCase(example.getName())) {
-                return persistentClass;
-            }
-        }
-        return null;
-    }
-
 }

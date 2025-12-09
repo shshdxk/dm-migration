@@ -49,12 +49,10 @@ public class User extends UpdatableEntity {
     private String avatarUrl1;
 
     @Column(name = "avatar_url2", length = Integer.MAX_VALUE, comment = "头像URL2")
-    @Convert(converter = StringListConvert.class)
     @JdbcTypeCode(SqlTypes.CLOB)
     private String avatarUrl2;
 
     @Column(name = "avatar_url3", comment = "头像URL3")
-    @Convert(converter = StringListConvert.class)
     @JdbcTypeCode(SqlTypes.NCLOB)
     private String avatarUrl3;
 

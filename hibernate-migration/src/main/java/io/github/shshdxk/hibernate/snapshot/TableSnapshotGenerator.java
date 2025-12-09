@@ -11,14 +11,13 @@ import io.github.shshdxk.liquibase.snapshot.SnapshotGenerator;
 import io.github.shshdxk.liquibase.structure.DatabaseObject;
 import io.github.shshdxk.liquibase.structure.core.Schema;
 import io.github.shshdxk.liquibase.structure.core.Table;
+import org.hibernate.boot.model.relational.Namespace;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.generator.Generator;
-import org.hibernate.mapping.Join;
-import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.ForeignKey;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 public class TableSnapshotGenerator extends HibernateSnapshotGenerator {
@@ -56,35 +55,23 @@ public class TableSnapshotGenerator extends HibernateSnapshotGenerator {
             return;
         }
 
-        if (foundObject instanceof Schema) {
+        if (foundObject instanceof Schema schema) {
 
-            Schema schema = (Schema) foundObject;
             HibernateDatabase database = (HibernateDatabase) snapshot.getDatabase();
             MetadataImplementor metadata = (MetadataImplementor) database.getMetadata();
-
-            Collection<PersistentClass> entityBindings = metadata.getEntityBindings();
-            Iterator<PersistentClass> tableMappings = entityBindings.iterator();
-
-            while (tableMappings.hasNext()) {
-                PersistentClass pc = tableMappings.next();
-
-                org.hibernate.mapping.Table hibernateTable = pc.getTable();
-                if (hibernateTable.isPhysicalTable()) {
-                    addDatabaseObjectToSchema(hibernateTable, schema, snapshot);
-
-                    Collection<Join> joins = pc.getJoins();
-                    Iterator<Join> joinMappings = joins.iterator();
-                    while (joinMappings.hasNext()) {
-                        Join join = joinMappings.next();
-                        addDatabaseObjectToSchema(join.getTable(), schema, snapshot);
+            for (Namespace namespace : metadata.getDatabase().getNamespaces()) {
+                for (org.hibernate.mapping.Table hibernateTable : namespace.getTables()) {
+                    if (hibernateTable.isPhysicalTable()) {
+                        addDatabaseObjectToSchema(hibernateTable, schema, snapshot);
+                        for (ForeignKey fk : hibernateTable.getForeignKeyCollection()) {
+                            addDatabaseObjectToSchema(fk.getTable(), schema, snapshot);
+                        }
                     }
                 }
             }
 
             Collection<org.hibernate.mapping.Collection> collectionBindings = metadata.getCollectionBindings();
-            Iterator<org.hibernate.mapping.Collection> collIter = collectionBindings.iterator();
-            while (collIter.hasNext()) {
-                org.hibernate.mapping.Collection coll = collIter.next();
+            for (org.hibernate.mapping.Collection coll : collectionBindings) {
                 org.hibernate.mapping.Table hTable = coll.getCollectionTable();
                 if (hTable.isPhysicalTable()) {
                     addDatabaseObjectToSchema(hTable, schema, snapshot);

@@ -10,6 +10,7 @@ import io.github.shshdxk.liquibase.structure.DatabaseObject;
 import io.github.shshdxk.liquibase.structure.core.ForeignKey;
 import io.github.shshdxk.liquibase.structure.core.Table;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.mapping.Column;
 
 import java.util.Collection;
 
@@ -36,7 +37,7 @@ public class ForeignKeySnapshotGenerator extends HibernateSnapshotGenerator {
 
             Collection<org.hibernate.mapping.Table> tmapp = metadata.collectTableMappings();
             for (org.hibernate.mapping.Table hibernateTable : tmapp) {
-                for (org.hibernate.mapping.ForeignKey hibernateForeignKey : hibernateTable.getForeignKeys().values()) {
+                for (org.hibernate.mapping.ForeignKey hibernateForeignKey : hibernateTable.getForeignKeyCollection()) {
                     Table currentTable = new Table().setName(hibernateTable.getName());
                     currentTable.setSchema(hibernateTable.getCatalog(), hibernateTable.getSchema());
 
@@ -49,15 +50,15 @@ public class ForeignKeySnapshotGenerator extends HibernateSnapshotGenerator {
                         fk.setName(hibernateForeignKey.getName());
                         fk.setPrimaryKeyTable(referencedTable);
                         fk.setForeignKeyTable(currentTable);
-                        for (Object column : hibernateForeignKey.getColumns()) {
-                            fk.addForeignKeyColumn(new io.github.shshdxk.liquibase.structure.core.Column(((org.hibernate.mapping.Column) column).getName()));
+                        for (Column column : hibernateForeignKey.getColumns()) {
+                            fk.addForeignKeyColumn(new io.github.shshdxk.liquibase.structure.core.Column(column.getName()));
                         }
-                        for (Object column : hibernateForeignKey.getReferencedColumns()) {
-                            fk.addPrimaryKeyColumn(new io.github.shshdxk.liquibase.structure.core.Column(((org.hibernate.mapping.Column) column).getName()));
+                        for (Column column : hibernateForeignKey.getReferencedColumns()) {
+                            fk.addPrimaryKeyColumn(new io.github.shshdxk.liquibase.structure.core.Column(column.getName()));
                         }
                         if (fk.getPrimaryKeyColumns() == null || fk.getPrimaryKeyColumns().isEmpty()) {
-                            for (Object column : hibernateReferencedTable.getPrimaryKey().getColumns()) {
-                                fk.addPrimaryKeyColumn(new io.github.shshdxk.liquibase.structure.core.Column(((org.hibernate.mapping.Column) column).getName()));
+                            for (Column column : hibernateReferencedTable.getPrimaryKey().getColumns()) {
+                                fk.addPrimaryKeyColumn(new io.github.shshdxk.liquibase.structure.core.Column(column.getName()));
                             }
                         }
 
