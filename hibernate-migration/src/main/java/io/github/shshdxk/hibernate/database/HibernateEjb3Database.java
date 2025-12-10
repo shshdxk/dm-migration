@@ -77,7 +77,7 @@ public class HibernateEjb3Database extends HibernateDatabase {
         String dialectString = findDialectName();
         if (dialectString != null) {
             try {
-                dialect = (Dialect) Class.forName(dialectString).newInstance();
+                dialect = (Dialect) Class.forName(dialectString).getDeclaredConstructor().newInstance();
                 Scope.getCurrentScope().getLog(getClass()).info("Using dialect " + dialectString);
             } catch (Exception e) {
                 throw new DatabaseException(e);
@@ -104,8 +104,7 @@ public class HibernateEjb3Database extends HibernateDatabase {
         properties.put(AvailableSettings.USE_SECOND_LEVEL_CACHE, Boolean.FALSE.toString());
         properties.put(AvailableSettings.USE_NATIONALIZED_CHARACTER_DATA, getProperty(AvailableSettings.USE_NATIONALIZED_CHARACTER_DATA));
 
-        final EntityManagerFactoryBuilderImpl builder = (EntityManagerFactoryBuilderImpl) persistenceProvider.getEntityManagerFactoryBuilderOrNull(getHibernateConnection().getPath(), properties, null);
-        return builder;
+        return (EntityManagerFactoryBuilderImpl) persistenceProvider.getEntityManagerFactoryBuilderOrNull(getHibernateConnection().getPath(), properties, null);
     }
 
     /**

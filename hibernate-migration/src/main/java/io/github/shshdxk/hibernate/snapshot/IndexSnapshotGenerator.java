@@ -7,6 +7,7 @@ import io.github.shshdxk.liquibase.snapshot.InvalidExampleException;
 import io.github.shshdxk.liquibase.snapshot.SnapshotGenerator;
 import io.github.shshdxk.liquibase.structure.DatabaseObject;
 import io.github.shshdxk.liquibase.structure.core.*;
+import org.hibernate.mapping.Selectable;
 
 public class IndexSnapshotGenerator extends HibernateSnapshotGenerator {
 
@@ -45,8 +46,7 @@ public class IndexSnapshotGenerator extends HibernateSnapshotGenerator {
         if (!snapshot.getSnapshotControl().shouldInclude(Index.class)) {
             return;
         }
-        if (foundObject instanceof Table) {
-            Table table = (Table) foundObject;
+        if (foundObject instanceof Table table) {
             org.hibernate.mapping.Table hibernateTable = findHibernateTable(table, snapshot);
             if (hibernateTable == null) {
                 return;
@@ -64,12 +64,12 @@ public class IndexSnapshotGenerator extends HibernateSnapshotGenerator {
         index.setRelation(table);
         index.setName(hibernateIndex.getName());
         index.setUnique(isUniqueIndex(hibernateIndex));
-        for (var hibernateColumn : hibernateIndex.getColumns()) {
-            String hibernateOrder = hibernateIndex.getColumnOrderMap().get(hibernateColumn);
+        for (Selectable hibernateColumn : hibernateIndex.getSelectables()) {
+            String hibernateOrder = hibernateIndex.getSelectableOrderMap().get(hibernateColumn);
             Boolean descending = HIBERNATE_ORDER_ASC.equals(hibernateOrder)
                     ? Boolean.FALSE
                     : (HIBERNATE_ORDER_DESC.equals(hibernateOrder) ? Boolean.TRUE : null);
-            index.getColumns().add(new Column(hibernateColumn.getName()).setRelation(table).setDescending(descending));
+            index.getColumns().add(new Column(((org.hibernate.mapping.Column) hibernateColumn).getName()).setRelation(table).setDescending(descending));
         }
         return index;
     }
@@ -80,7 +80,7 @@ public class IndexSnapshotGenerator extends HibernateSnapshotGenerator {
         actual diff in certain non-unique indexes
         */
         if (hibernateIndex.getColumnSpan() == 1) {
-            var col = hibernateIndex.getColumns().get(0);
+            org.hibernate.mapping.Column col = (org.hibernate.mapping.Column) hibernateIndex.getSelectables().get(0);
             return col.isUnique();
         } else {
             /*

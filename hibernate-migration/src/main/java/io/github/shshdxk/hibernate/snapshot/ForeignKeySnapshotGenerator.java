@@ -30,8 +30,7 @@ public class ForeignKeySnapshotGenerator extends HibernateSnapshotGenerator {
         if (!snapshot.getSnapshotControl().shouldInclude(ForeignKey.class)) {
             return;
         }
-        if (foundObject instanceof Table) {
-            Table table = (Table) foundObject;
+        if (foundObject instanceof Table table) {
             HibernateDatabase database = (HibernateDatabase) snapshot.getDatabase();
             MetadataImplementor metadata = (MetadataImplementor) database.getMetadata();
 

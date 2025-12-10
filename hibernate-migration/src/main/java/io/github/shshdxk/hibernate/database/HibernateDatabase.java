@@ -21,6 +21,7 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -118,8 +119,9 @@ public abstract class HibernateDatabase extends AbstractJdbcDatabase {
                 Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(path);
                 if (CustomMetadataFactory.class.isAssignableFrom(clazz)) {
                     try {
-                        return ((CustomMetadataFactory) clazz.newInstance()).getMetadata(this, getHibernateConnection());
-                    } catch (InstantiationException | IllegalAccessException e) {
+                        return ((CustomMetadataFactory) clazz.getDeclaredConstructor().newInstance()).getMetadata(this, getHibernateConnection());
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                             InvocationTargetException e) {
                         throw new DatabaseException(e);
                     }
                 }
@@ -171,7 +173,7 @@ public abstract class HibernateDatabase extends AbstractJdbcDatabase {
         String dialectString = findDialectName();
         if (dialectString != null) {
             try {
-                dialect = (Dialect) Thread.currentThread().getContextClassLoader().loadClass(dialectString).newInstance();
+                dialect = (Dialect) Thread.currentThread().getContextClassLoader().loadClass(dialectString).getDeclaredConstructor().newInstance();
                 Scope.getCurrentScope().getLog(getClass()).info("Using dialect " + dialectString);
             } catch (Exception e) {
                 throw new DatabaseException(e);
@@ -205,7 +207,7 @@ public abstract class HibernateDatabase extends AbstractJdbcDatabase {
 
         try {
             if (namingStrategy != null) {
-                builder.applyPhysicalNamingStrategy((PhysicalNamingStrategy) Thread.currentThread().getContextClassLoader().loadClass(namingStrategy).newInstance());
+                builder.applyPhysicalNamingStrategy((PhysicalNamingStrategy) Thread.currentThread().getContextClassLoader().loadClass(namingStrategy).getDeclaredConstructor().newInstance());
             }
         } catch (Exception e) {
             throw new DatabaseException(e);
@@ -233,7 +235,7 @@ public abstract class HibernateDatabase extends AbstractJdbcDatabase {
                         builder.applyImplicitNamingStrategy(org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl.INSTANCE);
                         break;
                     default:
-                        builder.applyImplicitNamingStrategy((ImplicitNamingStrategy) Thread.currentThread().getContextClassLoader().loadClass(namingStrategy).newInstance());
+                        builder.applyImplicitNamingStrategy((ImplicitNamingStrategy) Thread.currentThread().getContextClassLoader().loadClass(namingStrategy).getDeclaredConstructor().newInstance());
                         break;
                 }
 

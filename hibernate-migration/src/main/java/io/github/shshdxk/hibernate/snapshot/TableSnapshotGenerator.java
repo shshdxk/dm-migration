@@ -1,8 +1,6 @@
 package io.github.shshdxk.hibernate.snapshot;
 
 import io.github.shshdxk.hibernate.database.HibernateDatabase;
-import io.github.shshdxk.hibernate.snapshot.extension.ExtendedSnapshotGenerator;
-import io.github.shshdxk.hibernate.snapshot.extension.TableGeneratorSnapshotGenerator;
 import io.github.shshdxk.liquibase.Scope;
 import io.github.shshdxk.liquibase.exception.DatabaseException;
 import io.github.shshdxk.liquibase.snapshot.DatabaseSnapshot;
@@ -13,20 +11,14 @@ import io.github.shshdxk.liquibase.structure.core.Schema;
 import io.github.shshdxk.liquibase.structure.core.Table;
 import org.hibernate.boot.model.relational.Namespace;
 import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.generator.Generator;
 import org.hibernate.mapping.ForeignKey;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class TableSnapshotGenerator extends HibernateSnapshotGenerator {
 
-    private List<ExtendedSnapshotGenerator<Generator, Table>> tableIdGenerators = new ArrayList<>();
-
     public TableSnapshotGenerator() {
         super(Table.class, new Class[]{Schema.class});
-        tableIdGenerators.add(new TableGeneratorSnapshotGenerator());
     }
 
     @Override

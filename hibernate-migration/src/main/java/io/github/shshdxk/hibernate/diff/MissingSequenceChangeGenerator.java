@@ -20,9 +20,9 @@ public class MissingSequenceChangeGenerator extends io.github.shshdxk.liquibase.
 
     @Override
     public Change[] fixMissing(DatabaseObject missingObject, DiffOutputControl control, Database referenceDatabase, Database comparisonDatabase, ChangeGeneratorChain chain) {
-        if (referenceDatabase instanceof HibernateDatabase && !comparisonDatabase.supportsSequences()) {
+        if (referenceDatabase instanceof HibernateDatabase && comparisonDatabase.supports(Sequence.class)) {
             return null;
-        } else if (comparisonDatabase instanceof HibernateDatabase && !referenceDatabase.supportsSequences()) {
+        } else if (comparisonDatabase instanceof HibernateDatabase && comparisonDatabase.supports(Sequence.class)) {
             return null;
         }else {
             return super.fixMissing(missingObject, control, referenceDatabase, comparisonDatabase, chain);

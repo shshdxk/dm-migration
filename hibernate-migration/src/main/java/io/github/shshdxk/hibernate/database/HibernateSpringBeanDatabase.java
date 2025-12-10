@@ -22,6 +22,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -52,7 +53,7 @@ public class HibernateSpringBeanDatabase extends HibernateDatabase {
         if (value == null && beanDefinitionProperties != null) {
             for (Map.Entry entry : ((ManagedProperties) beanDefinition.getPropertyValues().getPropertyValue("hibernateProperties").getValue()).entrySet()) {
                 if (entry.getKey() instanceof TypedStringValue && entry.getValue() instanceof TypedStringValue) {
-                    if (((TypedStringValue) entry.getKey()).getValue().equals(name)) {
+                    if (Objects.equals(((TypedStringValue) entry.getKey()).getValue(), name)) {
                         return ((TypedStringValue) entry.getValue()).getValue();
                     }
                 }
@@ -83,9 +84,6 @@ public class HibernateSpringBeanDatabase extends HibernateDatabase {
         }
 
         beanDefinition = registry.getBeanDefinition(beanName);
-        if (beanDefinition == null) {
-            throw new IllegalStateException("A bean named '" + beanName + "' could not be found in '" + connection.getPath() + "'.");
-        }
 
         beanDefinitionProperties = (ManagedProperties) beanDefinition.getPropertyValues().getPropertyValue("hibernateProperties").getValue();
     }
@@ -116,8 +114,8 @@ public class HibernateSpringBeanDatabase extends HibernateDatabase {
                     for (TypedStringValue mappingLocation : mappingLocations) {
                         Scope.getCurrentScope().getLog(getClass()).info("Found mappingLocation " + mappingLocation.getValue());
                         Resource[] resources = resourcePatternResolver.getResources(mappingLocation.getValue());
-                        for (int i = 0; i < resources.length; i++) {
-                            URL url = resources[i].getURL();
+                        for (Resource resource : resources) {
+                            URL url = resource.getURL();
                             Scope.getCurrentScope().getLog(getClass()).info("Adding resource  " + url);
                             sources.addURL(url);
                         }

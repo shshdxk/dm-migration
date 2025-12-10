@@ -15,7 +15,6 @@ import io.github.shshdxk.liquibase.structure.core.DataType;
 import io.github.shshdxk.liquibase.structure.core.Relation;
 import io.github.shshdxk.liquibase.structure.core.Table;
 import io.github.shshdxk.liquibase.util.SqlUtil;
-import io.github.shshdxk.liquibase.util.StringUtil;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.SequenceGenerator;
@@ -283,7 +282,7 @@ public class ColumnSnapshotGenerator extends HibernateSnapshotGenerator {
             dataType.setDecimalDigits(Integer.parseInt(matcher.group(3)));
         }
 
-        String extra = StringUtil.trimToNull(matcher.group(4));
+        String extra = StringUtils.trimToNull(matcher.group(4));
         if (extra != null) {
             if (extra.equalsIgnoreCase("char")) {
                 dataType.setColumnSizeUnit(DataType.ColumnSizeUnit.CHAR);

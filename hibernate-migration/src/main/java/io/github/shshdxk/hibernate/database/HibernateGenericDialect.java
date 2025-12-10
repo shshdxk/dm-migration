@@ -10,6 +10,6 @@ import io.github.shshdxk.liquibase.exception.DatabaseException;
  */
 public class HibernateGenericDialect extends Dialect {
     public HibernateGenericDialect() throws DatabaseException {
-        super(DatabaseVersion.make( 6, 1 ));
+        super(DatabaseVersion.make( 7, 1 ));
     }
 }
