@@ -6,7 +6,7 @@
 
     <groupId>io.github.shshdxk</groupId>
     <artifactId>dm-migration-parent</artifactId>
-    <version>4.34.2</version>
+    <version>4.34.3</version>
     <packaging>pom</packaging>
     <name>dm-migration-parent</name>
     <description>数据库迁移工具</description>
@@ -17,8 +17,8 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <liquibase.version>4.34.0</liquibase.version>
-        <hibernate.version>7.1.11.Final</hibernate.version>
-        <spring.version>7.0.1</spring.version>
+        <hibernate.version>7.2.0.Final</hibernate.version>
+        <spring.version>7.0.2</spring.version>
         <hibernate.models.version>1.0.1</hibernate.models.version>
     </properties>
     <modules>
