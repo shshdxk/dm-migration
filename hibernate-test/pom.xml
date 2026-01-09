@@ -17,7 +17,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <hibernate.version>7.1.11.Final</hibernate.version>
+        <hibernate.version>7.2.0.Final</hibernate.version>
         <hibernate-validator.version>9.1.0.Final</hibernate-validator.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
     </properties>
@@ -155,9 +155,9 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>io.github.shshdxk</groupId>
+                <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>4.34.0</version>
+                <version>5.0.1</version>
                 <configuration>
 <!--                    <diffExcludeObjects>table:.*n.*,</diffExcludeObjects>-->
                     <driverPropertiesFile>src/main/resources/config/liquibase/dm/liquibase-mysql.properties</driverPropertiesFile>
@@ -202,15 +202,40 @@
                         <systemPath>${project.basedir}/../lib/org/dm/DmDialect-for-hibernate/5.4/DmDialect-for-hibernate-5.4.jar</systemPath>
                     </dependency>
                     <dependency>
-                        <groupId>io.github.shshdxk</groupId>
-                        <artifactId>dm-migration</artifactId>
-                        <version>${project.version}</version>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate7</artifactId>
+                        <version>5.0.1-SNAPSHOT</version>
                     </dependency>
                     <dependency>
-                        <groupId>io.github.shshdxk</groupId>
-                        <artifactId>hibernate-migration</artifactId>
-                        <version>${project.version}</version>
+                        <groupId>org.hibernate.orm</groupId>
+                        <artifactId>hibernate-core</artifactId>
+                        <version>7.2.0.Final</version>
                     </dependency>
+                    <dependency>
+                        <groupId>jakarta.validation</groupId>
+                        <artifactId>jakarta.validation-api</artifactId>
+                        <version>3.1.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>jakarta.persistence</groupId>
+                        <artifactId>jakarta.persistence-api</artifactId>
+                        <version>3.2.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-data-jpa</artifactId>
+                        <version>4.0.0</version>
+                    </dependency>
+<!--                    <dependency>-->
+<!--                        <groupId>io.github.shshdxk</groupId>-->
+<!--                        <artifactId>dm-migration</artifactId>-->
+<!--                        <version>${project.version}</version>-->
+<!--                    </dependency>-->
+<!--                    <dependency>-->
+<!--                        <groupId>io.github.shshdxk</groupId>-->
+<!--                        <artifactId>hibernate-migration</artifactId>-->
+<!--                        <version>${project.version}</version>-->
+<!--                    </dependency>-->
                     <dependency>
                         <groupId>com.mysql</groupId>
                         <artifactId>mysql-connector-j</artifactId>

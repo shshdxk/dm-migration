@@ -1,0 +1,135 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="60902 (generated)" id="1767953932454-1">
+        <createTable tableName="SeqTable">
+            <column name="pk" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SeqTablePK"/>
+            </column>
+            <column name="seq" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-2">
+        <createTable remarks="用户设置表" tableName="ih_user_settings">
+            <column name="id" remarks="主键" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ih_user_settingsPK"/>
+            </column>
+            <column name="setting_key" remarks="参数描述" type="ENUM('DEMO')"/>
+            <column name="setting_value" remarks="值" type="VARCHAR(2000)"/>
+            <column name="user_id" remarks="用户" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-3">
+        <createTable remarks="用户表" tableName="ih_users">
+            <column name="id" remarks="主键" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ih_usersPK"/>
+            </column>
+            <column name="avatar_url" remarks="头像URL" type="LONGTEXT"/>
+            <column name="avatar_url1" remarks="头像URL1" type="TINYTEXT"/>
+            <column name="avatar_url2" remarks="头像URL2" type="LONGTEXT"/>
+            <column name="avatar_url3" remarks="头像URL3" type="LONGTEXT"/>
+            <column defaultValueBoolean="false" name="is_deleted" remarks="是否删除" type="BIT"/>
+            <column name="full_name" remarks="全称" type="TINYTEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender" remarks="性别" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="true" name="is_locked" remarks="是否被锁定" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="-1" name="mobile" remarks="联系方式" type="VARCHAR(255)"/>
+            <column name="password_hash" remarks="密码" type="VARCHAR(255)"/>
+            <column name="username" remarks="用户名" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-4">
+        <createTable remarks="用户表A" tableName="ih_users_a">
+            <column name="id" remarks="pk" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ih_users_aPK"/>
+            </column>
+            <column name="username" remarks="用户名" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-5">
+        <createTable remarks="用户表B" tableName="ih_users_b">
+            <column autoIncrement="true" incrementBy="22" name="id" remarks="pk" startWith="3" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ih_users_bPK"/>
+            </column>
+            <column name="username" remarks="用户名" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_c_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-6">
+        <createTable remarks="用户表C" tableName="ih_users_c">
+            <column autoIncrement="true" incrementBy="22" name="id" remarks="pk" startWith="3" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ih_users_cPK"/>
+            </column>
+            <column name="username" remarks="用户名" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-7">
+        <createTable remarks="用户表D" tableName="ih_users_d">
+            <column name="id" remarks="pk" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ih_users_dPK"/>
+            </column>
+            <column name="username" remarks="用户名" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-8">
+        <createTable remarks="用户表E" tableName="ih_users_e">
+            <column name="id" remarks="pk" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ih_users_ePK"/>
+            </column>
+            <column name="username" remarks="用户名" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-9">
+        <createTable remarks="用户表F" tableName="ih_users_f">
+            <column autoIncrement="true" name="id" remarks="pk" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ih_users_fPK"/>
+            </column>
+            <column name="username" remarks="用户名" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-10">
+        <createTable tableName="ih_users_f_SEQ">
+            <column name="next_val" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-11">
+        <createTable tableName="user_c_id_seq">
+            <column name="next_val" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-12">
+        <addUniqueConstraint columnNames="mobile" constraintName="U_USERS_MOBILE" tableName="ih_users"/>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-13">
+        <addUniqueConstraint columnNames="username" constraintName="U_USERS_USERNAME" tableName="ih_users"/>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-14">
+        <addUniqueConstraint columnNames="user_id" constraintName="U_USER_SETTINGS_USE_ID" tableName="ih_user_settings"/>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-15">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="ih_user_settings" constraintName="FK_USER_SETTING_USER_ID1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="ih_users" validate="true"/>
+    </changeSet>
+    <changeSet author="60902 (generated)" id="1767953932454-16">
+        <addForeignKeyConstraint baseColumnNames="user_c_id" baseTableName="ih_users_b" constraintName="FKa9iraeyyerpkfm21gbkveknkt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="ih_users_c" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

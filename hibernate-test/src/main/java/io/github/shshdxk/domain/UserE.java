@@ -17,7 +17,7 @@ public class UserE implements Persistable<Long>, Serializable {
     public static final String TABLE_NAME = "ih_users_e";
 
     @Id
-    @Column(name = "id", nullable = false, updatable = false, comment = "主键")
+    @Column(name = "id", nullable = false, updatable = false, comment = "pk")
     @NativeGenerator(tableForm = @TableGenerator(
             name = "user_e_seq",
             table = "SeqTable",
@@ -28,15 +28,6 @@ public class UserE implements Persistable<Long>, Serializable {
             allocationSize = 31
     )
     )
-//    @TableGenerator(
-//            name = "user_e_seq",
-//            table = "SeqTable",
-//            pkColumnName = "pk",
-//            pkColumnValue = "user_e",
-//            valueColumnName = "seq",
-//            initialValue = 12,
-//            allocationSize = 31
-//    )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "user_e_seq")
     private Long id;
 

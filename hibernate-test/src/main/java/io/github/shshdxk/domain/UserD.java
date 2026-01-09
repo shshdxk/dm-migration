@@ -16,7 +16,7 @@ public class UserD implements Persistable<Long>, Serializable {
     public static final String TABLE_NAME = "ih_users_d";
 
     @Id
-    @Column(name = "id", nullable = false, updatable = false, comment = "主键")
+    @Column(name = "id", nullable = false, updatable = false, comment = "pk")
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "user_d_seq")
     @TableGenerator(name = "user_d_seq", table = "SeqTable", pkColumnName = "pk", pkColumnValue = "user_d", valueColumnName = "seq", initialValue = 12, allocationSize = 31)
     private Long id;

@@ -16,7 +16,7 @@ public class UserF implements Persistable<Long>, Serializable {
     public static final String TABLE_NAME = "ih_users_f";
 
     @Id
-    @Column(name = "id", nullable = false, updatable = false, comment = "主键")
+    @Column(name = "id", nullable = false, updatable = false, comment = "pk")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

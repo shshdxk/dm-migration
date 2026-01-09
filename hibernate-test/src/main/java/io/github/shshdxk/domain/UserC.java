@@ -16,7 +16,7 @@ public class UserC implements Persistable<Long>, Serializable {
     public static final String TABLE_NAME = "ih_users_c";
 
     @Id
-    @Column(name = "id", nullable = false, updatable = false, comment = "主键")
+    @Column(name = "id", nullable = false, updatable = false, comment = "pk")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_c_id_seq_gen")
     @SequenceGenerator(
             name = "user_c_id_seq_gen",
