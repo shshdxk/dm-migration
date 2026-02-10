@@ -2,6 +2,7 @@ package io.github.shshdxk.dm.datatype.core;
 
 
 import io.github.shshdxk.dm.database.core.DmDatabase;
+import io.github.shshdxk.dm.database.core.KingbaseDatabase;
 import io.github.shshdxk.liquibase.database.Database;
 import io.github.shshdxk.liquibase.datatype.DataTypeInfo;
 import io.github.shshdxk.liquibase.datatype.DatabaseDataType;
@@ -17,8 +18,15 @@ public class VarcharType extends io.github.shshdxk.liquibase.datatype.core.Varch
         String originalDefinition = StringUtil.trimToEmpty(getRawDefinition());
         if ((database instanceof DmDatabase)) {
             int size = getSize();
-            if (originalDefinition.toLowerCase(Locale.US).startsWith("varchar") && size > 0) {
+            if (size == Integer.MAX_VALUE) {
+                return new DatabaseDataType("TEXT");
+            } else if (originalDefinition.toLowerCase(Locale.US).startsWith("varchar") && size > 0) {
                 return new DatabaseDataType("VARCHAR", size + " CHAR");
+            }
+        } else if ((database instanceof KingbaseDatabase)) {
+            int size = getSize();
+            if (size == Integer.MAX_VALUE) {
+                return new DatabaseDataType("TEXT");
             }
         }
         return super.toDatabaseDataType(database);
